@@ -2,13 +2,14 @@
   "name": "سجل متابعة ودرجات طلاب ثالث متوسط",
   "short_name": "سجل الطلاب",
   "description": "تطبيق لتتبع حضور ودرجات الطلاب",
-  "start_url": ".",
+  "start_url": "/student-tracker-pwa/",
   "display": "standalone",
   "background_color": "#f0f4f8",
   "theme_color": "#4361ee",
   "orientation": "portrait",
   "lang": "ar",
-  "scope": "/",
+  "scope": "/student-tracker-pwa/",
+  "categories": ["education", "productivity"],
   "icons": [
     {
       "src": "icon-192.png",
@@ -24,5 +25,3 @@
     }
   ]
 }
-
-
