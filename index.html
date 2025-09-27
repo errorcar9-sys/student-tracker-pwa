@@ -1,0 +1,4390 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سجل متابعة ودرجات طلاب ثالث متوسط 2025-2026</title>
+<!-- إضافة ملف manifest للـ PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4361ee">
+<!-- إضافة دعم PWA -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="سجل الطلاب">
+<link rel="apple-touch-icon" href="https://picsum.photos/seed/studenttracker/192/192.jpg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+--bg: #f0f4f8;
+--card: #ffffff;
+--primary: #4361ee;
+--secondary: #3f37c9;
+--accent: #4cc9f0;
+--success: #06ffa5;
+--warning: #ffbe0b;
+--danger: #fb5607;
+--muted: #6c757d;
+--dark: #212529;
+--light: #f8f9fa;
+--border: #e9ecef;
+--shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+font-family: 'Tajawal', 'Segoe UI', Arial, sans-serif;
+background-color: var(--bg);
+color: var(--dark);
+line-height: 1.6;
+}
+
+header {
+background: linear-gradient(135deg, var(--primary), var(--secondary));
+color: white;
+padding: 1.5rem 1.25rem;
+box-shadow: 0 4px 12px var(--shadow);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+header h1 {
+margin: 0;
+font-size: 1.5rem;
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+header h1 i {
+font-size: 1.8rem;
+}
+
+.container {
+max-width: 1200px;
+margin: 1.5rem auto;
+padding: 1rem;
+}
+
+.card {
+background: var(--card);
+border-radius: 12px;
+padding: 1.5rem;
+margin-bottom: 1.5rem;
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+transform: translateY(-3px);
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.tabs {
+display: flex;
+gap: 0.5rem;
+margin-bottom: 1.5rem;
+overflow: auto;
+border-bottom: 2px solid var(--border);
+padding-bottom: 0.5rem;
+}
+
+.tab {
+padding: 0.75rem 1.25rem;
+border-radius: 8px 8px 0 0;
+cursor: pointer;
+background: transparent;
+color: var(--muted);
+font-weight: 600;
+white-space: nowrap;
+transition: all 0.3s ease;
+position: relative;
+}
+
+.tab:hover {
+color: var(--primary);
+background: rgba(67, 97, 238, 0.05);
+}
+
+.tab.active {
+color: var(--primary);
+background: var(--card);
+}
+
+.tab.active::after {
+content: '';
+position: absolute;
+bottom: -2px;
+right: 0;
+width: 100%;
+height: 3px;
+background: var(--primary);
+border-radius: 3px 3px 0 0;
+}
+
+button {
+border: none;
+padding: 0.65rem 1.25rem;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+transition: all 0.3s ease;
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.btn {
+background: var(--primary);
+color: white;
+}
+
+.btn:hover {
+background: var(--secondary);
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn.ghost {
+background: transparent;
+color: var(--primary);
+border: 1px solid var(--primary);
+}
+
+.btn.ghost:hover {
+background: var(--primary);
+color: white;
+}
+
+.btn-success {
+background: var(--success);
+color: var(--dark);
+}
+
+.btn-success:hover {
+background: #04d277;
+}
+
+.btn-warning {
+background: var(--warning);
+color: var(--dark);
+}
+
+.btn-warning:hover {
+background: #e6ac00;
+}
+
+.btn-danger {
+background: var(--danger);
+color: white;
+}
+
+.btn-danger:hover {
+background: #e04e06;
+}
+
+.btn-primary {
+background: var(--primary);
+color: white;
+}
+
+.btn-primary:hover {
+background: var(--secondary);
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.95rem;
+margin-top: 1rem;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+border: 1px solid var(--border);
+padding: 0.75rem;
+text-align: center;
+}
+
+th {
+background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+color: var(--dark);
+font-weight: 600;
+position: sticky;
+top: 0;
+}
+
+tr:nth-child(even) {
+background-color: rgba(0, 0, 0, 0.02);
+}
+
+tr:hover {
+background-color: rgba(67, 97, 238, 0.05);
+}
+
+.attendance-present {
+background-color: rgba(6, 255, 165, 0.2);
+}
+
+.attendance-absent {
+background-color: rgba(251, 86, 7, 0.2);
+}
+
+.attendance-late {
+background-color: rgba(255, 190, 11, 0.2);
+}
+
+.holiday {
+background-color: rgba(67, 97, 238, 0.1);
+color: var(--primary);
+font-weight: 600;
+}
+
+select, input {
+padding: 0.65rem;
+border-radius: 8px;
+border: 1px solid var(--border);
+transition: all 0.3s ease;
+font-family: inherit;
+}
+
+select:focus, input:focus {
+outline: none;
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+.small {
+font-size: 0.9rem;
+color: var(--muted);
+}
+
+.muted {
+color: var(--muted);
+}
+
+.form-group {
+margin-bottom: 1rem;
+}
+
+.form-row {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+align-items: flex-end;
+}
+
+.form-col {
+flex: 1;
+min-width: 200px;
+}
+
+.form-col label {
+display: block;
+margin-bottom: 0.5rem;
+font-weight: 600;
+color: var(--dark);
+}
+
+.stats-container {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 1rem;
+margin-bottom: 1.5rem;
+}
+
+.stat-card {
+background: white;
+border-radius: 10px;
+padding: 1.25rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+transform: translateY(-5px);
+}
+
+.stat-card i {
+font-size: 2rem;
+margin-bottom: 0.75rem;
+}
+
+.stat-card .value {
+font-size: 1.75rem;
+font-weight: 700;
+margin-bottom: 0.25rem;
+}
+
+.stat-card .label {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+.stat-card.primary {
+border-top: 4px solid var(--primary);
+}
+
+.stat-card.primary i {
+color: var(--primary);
+}
+
+.stat-card.success {
+border-top: 4px solid var(--success);
+}
+
+.stat-card.success i {
+color: var(--success);
+}
+
+.stat-card.warning {
+border-top: 4px solid var(--warning);
+}
+
+.stat-card.warning i {
+color: var(--warning);
+}
+
+.stat-card.danger {
+border-top: 4px solid var(--danger);
+}
+
+.stat-card.danger i {
+color: var(--danger);
+}
+
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 1000;
+justify-content: center;
+align-items: center;
+}
+
+.modal-content {
+background-color: white;
+border-radius: 12px;
+padding: 2rem;
+max-width: 600px;
+width: 90%;
+max-height: 90vh;
+overflow-y: auto;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+from { opacity: 0; transform: translateY(-30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+margin: 0;
+color: var(--dark);
+}
+
+.close-btn {
+background: none;
+border: none;
+font-size: 1.5rem;
+color: var(--muted);
+cursor: pointer;
+padding: 0;
+width: 30px;
+height: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+background: var(--light);
+color: var(--dark);
+}
+
+.modal-footer {
+display: flex;
+justify-content: flex-end;
+gap: 1rem;
+margin-top: 1.5rem;
+padding-top: 1rem;
+border-top: 1px solid var(--border);
+}
+
+.notification {
+position: fixed;
+top: 20px;
+left: 20px;
+background: white;
+padding: 1rem 1.5rem;
+border-radius: 8px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+display: flex;
+align-items: center;
+gap: 1rem;
+z-index: 1001;
+transform: translateX(-120%);
+transition: transform 0.3s ease;
+max-width: 400px;
+}
+
+.notification.show {
+transform: translateX(0);
+}
+
+.notification.success {
+border-right: 4px solid var(--success);
+}
+
+.notification.error {
+border-right: 4px solid var(--danger);
+}
+
+.notification.info {
+border-right: 4px solid var(--primary);
+}
+
+.notification.warning {
+border-right: 4px solid var(--warning);
+}
+
+.notification i {
+font-size: 1.5rem;
+}
+
+.notification.success i {
+color: var(--success);
+}
+
+.notification.error i {
+color: var(--danger);
+}
+
+.notification.info i {
+color: var(--primary);
+}
+
+.notification.warning i {
+color: var(--warning);
+}
+
+.notification .notification-content {
+flex: 1;
+}
+
+.notification .notification-title {
+font-weight: 700;
+margin-bottom: 0.25rem;
+}
+
+.notification .notification-message {
+font-size: 0.9rem;
+color: var(--muted);
+}
+
+.file-upload {
+position: relative;
+display: inline-block;
+cursor: pointer;
+width: 100%;
+}
+
+.file-upload input[type=file] {
+position: absolute;
+opacity: 0;
+width: 100%;
+height: 100%;
+cursor: pointer;
+}
+
+.file-upload-label {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.5rem;
+padding: 0.75rem;
+background: var(--light);
+border: 2px dashed var(--border);
+border-radius: 8px;
+color: var(--muted);
+transition: all 0.3s ease;
+}
+
+.file-upload:hover .file-upload-label {
+border-color: var(--primary);
+color: var(--primary);
+}
+
+.report-container {
+margin-top: 1.5rem;
+}
+
+.report-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+}
+
+.report-title {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--dark);
+}
+
+.report-filters {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+}
+
+.chart-container {
+height: 300px;
+margin: 1.5rem 0;
+}
+
+.file-format-info {
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+margin-top: 1rem;
+border-right: 4px solid var(--primary);
+}
+
+.file-format-info h4 {
+margin-top: 0;
+color: var(--primary);
+}
+
+.file-format-info ul {
+padding-right: 1.5rem;
+}
+
+.file-format-info li {
+margin-bottom: 0.5rem;
+}
+
+.import-preview {
+margin-top: 1rem;
+max-height: 300px;
+overflow-y: auto;
+border: 1px solid var(--border);
+border-radius: 8px;
+}
+
+.import-preview table {
+margin-top: 0;
+border-radius: 0;
+}
+
+.import-preview th {
+position: sticky;
+top: 0;
+z-index: 10;
+}
+
+.import-summary {
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+margin-top: 1rem;
+border-right: 4px solid var(--primary);
+}
+
+.import-summary h4 {
+margin-top: 0;
+color: var(--primary);
+}
+
+.import-summary ul {
+padding-right: 1.5rem;
+}
+
+.import-summary li {
+margin-bottom: 0.5rem;
+}
+
+.import-summary .success {
+color: var(--success);
+}
+
+.import-summary .warning {
+color: var(--warning);
+}
+
+.import-summary .error {
+color: var(--danger);
+}
+
+.attendance-details {
+margin-top: 1rem;
+}
+
+.attendance-details h4 {
+margin-bottom: 0.5rem;
+color: var(--primary);
+}
+
+.attendance-summary {
+display: flex;
+gap: 1rem;
+margin-bottom: 1rem;
+flex-wrap: wrap;
+}
+
+.attendance-stat {
+background: var(--light);
+border-radius: 8px;
+padding: 0.75rem;
+flex: 1;
+min-width: 150px;
+text-align: center;
+}
+
+.attendance-stat .value {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--primary);
+}
+
+.attendance-stat .label {
+font-size: 0.9rem;
+color: var(--muted);
+}
+
+/* Warning indicators */
+.warning-indicator {
+display: inline-block;
+width: 24px;
+height: 24px;
+border-radius: 50%;
+text-align: center;
+line-height: 24px;
+color: white;
+font-weight: bold;
+margin-left: 5px;
+}
+
+.warning-first {
+background-color: var(--warning);
+}
+
+.warning-second {
+background-color: #ff8c00;
+}
+
+.warning-final {
+background-color: var(--danger);
+}
+
+.warning-fail {
+background-color: #800000;
+}
+
+.month-selector {
+display: flex;
+gap: 1rem;
+margin-bottom: 1.5rem;
+flex-wrap: wrap;
+align-items: center;
+}
+
+.month-selector select {
+flex: 1;
+min-width: 200px;
+}
+
+.student-monthly-attendance {
+margin-top: 1.5rem;
+}
+
+.student-monthly-attendance h4 {
+margin-bottom: 1rem;
+color: var(--primary);
+}
+
+.student-attendance-card {
+background: white;
+border-radius: 10px;
+padding: 1rem;
+margin-bottom: 1rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.student-info {
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.student-info .name {
+font-weight: 700;
+font-size: 1.1rem;
+}
+
+.student-info .class {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+.attendance-stats {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+}
+
+.attendance-stat-item {
+text-align: center;
+padding: 0.5rem;
+background: var(--light);
+border-radius: 8px;
+min-width: 80px;
+}
+
+.attendance-stat-item .value {
+font-weight: 700;
+font-size: 1.2rem;
+color: var(--primary);
+}
+
+.attendance-stat-item .label {
+font-size: 0.8rem;
+color: var(--muted);
+}
+
+.archive-section {
+margin-top: 2rem;
+padding: 1rem;
+background: var(--light);
+border-radius: 8px;
+border-right: 4px solid var(--primary);
+}
+
+.archive-section h4 {
+margin-top: 0;
+color: var(--primary);
+}
+
+.archive-list {
+max-height: 200px;
+overflow-y: auto;
+margin-top: 1rem;
+}
+
+.archive-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.5rem;
+border-bottom: 1px solid var(--border);
+}
+
+.archive-item:last-child {
+border-bottom: none;
+}
+
+.archive-item .month-name {
+font-weight: 600;
+}
+
+.archive-item .date {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+/* Student Search Styles */
+.student-search-container {
+margin-bottom: 1.5rem;
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+border-right: 4px solid var(--primary);
+}
+
+.student-search-container h4 {
+margin-top: 0;
+margin-bottom: 1rem;
+color: var(--primary);
+}
+
+.student-search-result {
+margin-top: 1rem;
+display: none;
+}
+
+.student-search-result.show {
+display: block;
+}
+
+.student-info-card {
+background: white;
+border-radius: 10px;
+padding: 1.5rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.student-info-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+border-bottom: 1px solid var(--border);
+padding-bottom: 0.75rem;
+}
+
+.student-info-header .name {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--primary);
+}
+
+.student-info-header .class {
+font-size: 1rem;
+color: var(--muted);
+}
+
+.student-stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 1rem;
+margin-top: 1rem;
+}
+
+.student-stat-item {
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+text-align: center;
+}
+
+.student-stat-item .value {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--primary);
+margin-bottom: 0.25rem;
+}
+
+.student-stat-item .label {
+font-size: 0.9rem;
+color: var(--muted);
+}
+
+.student-stat-item.warning .value {
+color: var(--warning);
+}
+
+.student-stat-item.danger .value {
+color: var(--danger);
+}
+
+.student-stat-item.success .value {
+color: var(--success);
+}
+
+.attendance-history {
+margin-top: 1.5rem;
+}
+
+.attendance-history h5 {
+margin-bottom: 0.75rem;
+color: var(--dark);
+}
+
+.attendance-history-table {
+max-height: 200px;
+overflow-y: auto;
+}
+
+.grades-history {
+margin-top: 1.5rem;
+}
+
+.grades-history h5 {
+margin-bottom: 0.75rem;
+color: var(--dark);
+}
+
+.grades-history-table {
+max-height: 200px;
+overflow-y: auto;
+}
+
+/* Month Search Styles */
+.month-search-container {
+margin-bottom: 1.5rem;
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+border-right: 4px solid var(--primary);
+}
+
+.month-search-container h4 {
+margin-top: 0;
+margin-bottom: 1rem;
+color: var(--primary);
+}
+
+.month-search-result {
+margin-top: 1rem;
+display: none;
+}
+
+.month-search-result.show {
+display: block;
+}
+
+.month-info-card {
+background: white;
+border-radius: 10px;
+padding: 1.5rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.month-info-header {
+margin-bottom: 1rem;
+border-bottom: 1px solid var(--border);
+padding-bottom: 0.75rem;
+}
+
+.month-info-header .month-name {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--primary);
+}
+
+.month-stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 1rem;
+margin-top: 1rem;
+}
+
+.month-stat-item {
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+text-align: center;
+}
+
+.month-stat-item .value {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--primary);
+margin-bottom: 0.25rem;
+}
+
+.month-stat-item .label {
+font-size: 0.9rem;
+color: var(--muted);
+}
+
+.month-stat-item.warning .value {
+color: var(--warning);
+}
+
+.month-stat-item.danger .value {
+color: var(--danger);
+}
+
+.month-stat-item.success .value {
+color: var(--success);
+}
+
+.month-students-list {
+margin-top: 1.5rem;
+}
+
+.month-students-list h5 {
+margin-bottom: 0.75rem;
+color: var(--dark);
+}
+
+.month-students-table {
+max-height: 200px;
+overflow-y: auto;
+}
+
+/* Holiday Calendar Styles */
+.holiday-calendar-container {
+margin-bottom: 1.5rem;
+background: var(--light);
+border-radius: 8px;
+padding: 1rem;
+border-right: 4px solid var(--primary);
+}
+
+.holiday-calendar-container h4 {
+margin-top: 0;
+margin-bottom: 1rem;
+color: var(--primary);
+}
+
+.holiday-calendar-result {
+margin-top: 1rem;
+display: none;
+}
+
+.holiday-calendar-result.show {
+display: block;
+}
+
+.holiday-info-card {
+background: white;
+border-radius: 10px;
+padding: 1.5rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.holiday-info-header {
+margin-bottom: 1rem;
+border-bottom: 1px solid var(--border);
+padding-bottom: 0.75rem;
+}
+
+.holiday-info-header .year-name {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--primary);
+}
+
+.holiday-list {
+margin-top: 1rem;
+}
+
+.holiday-list h5 {
+margin-bottom: 0.75rem;
+color: var(--dark);
+}
+
+.holiday-list-table {
+max-height: 300px;
+overflow-y: auto;
+}
+
+.holiday-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.5rem;
+border-bottom: 1px solid var(--border);
+}
+
+.holiday-item:last-child {
+border-bottom: none;
+}
+
+.holiday-item .holiday-date {
+font-weight: 600;
+color: var(--primary);
+}
+
+.holiday-item .holiday-name {
+flex: 1;
+margin-right: 1rem;
+}
+
+.holiday-item .holiday-type {
+font-size: 0.8rem;
+padding: 0.25rem 0.5rem;
+border-radius: 4px;
+background: var(--light);
+color: var(--muted);
+}
+
+/* Student Autocomplete Dropdown */
+.autocomplete-container {
+position: relative;
+width: 100%;
+}
+
+.autocomplete-dropdown {
+position: absolute;
+top: 100%;
+left: 0;
+right: 0;
+background: white;
+border: 1px solid var(--border);
+border-radius: 8px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+max-height: 200px;
+overflow-y: auto;
+z-index: 100;
+display: none;
+}
+
+.autocomplete-dropdown.show {
+display: block;
+}
+
+.autocomplete-item {
+padding: 0.75rem;
+cursor: pointer;
+border-bottom: 1px solid var(--border);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.autocomplete-item:last-child {
+border-bottom: none;
+}
+
+.autocomplete-item:hover {
+background-color: rgba(67, 97, 238, 0.05);
+}
+
+.autocomplete-item.selected {
+background-color: rgba(67, 97, 238, 0.1);
+}
+
+.autocomplete-item .student-name {
+font-weight: 600;
+}
+
+.autocomplete-item .student-class {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+.autocomplete-no-results {
+padding: 0.75rem;
+color: var(--muted);
+text-align: center;
+}
+
+.save-data-section {
+background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(63, 55, 201, 0.1));
+border-radius: 12px;
+padding: 1.5rem;
+margin-bottom: 1.5rem;
+border: 2px dashed var(--primary);
+text-align: center;
+}
+
+.save-data-section h3 {
+color: var(--primary);
+margin-bottom: 1rem;
+}
+
+.save-data-section p {
+color: var(--dark);
+margin-bottom: 1.5rem;
+}
+
+.save-data-btn {
+background: linear-gradient(135deg, var(--primary), var(--secondary));
+color: white;
+font-size: 1.1rem;
+padding: 0.8rem 2rem;
+border-radius: 50px;
+box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+transition: all 0.3s ease;
+}
+
+.save-data-btn:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+}
+
+/* PWA Install Button */
+.install-btn {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: var(--primary);
+color: white;
+border: none;
+border-radius: 50%;
+width: 60px;
+height: 60px;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+cursor: pointer;
+z-index: 1000;
+transition: all 0.3s ease;
+}
+
+.install-btn:hover {
+transform: scale(1.1);
+}
+
+.install-btn i {
+font-size: 1.5rem;
+}
+
+@media(max-width: 900px) {
+.grid {
+grid-template-columns: 1fr;
+}
+
+.form-row {
+flex-direction: column;
+}
+
+.form-col {
+width: 100%;
+}
+}
+
+@media print {
+body {
+background: white;
+}
+
+.card {
+box-shadow: none;
+page-break-inside: avoid;
+}
+
+.tabs, .btn, .stats-container, .install-btn {
+display: none;
+}
+
+table {
+page-break-inside: auto;
+}
+
+tr {
+page-break-inside: avoid;
+page-break-after: auto;
+}
+
+thead {
+display: table-header-group;
+}
+
+tfoot {
+display: table-footer-group;
+}
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+<h1><i class="fas fa-graduation-cap"></i> سجل متابعة ودرجات طلاب ثالث متوسط — 2025/2026</h1>
+<div class="small">النظام: شهري1/شهري2 → معدل الفصل · نصف السنة · شهري1/شهري2 فصل2 → نهاية السنة · المعدل السنوي</div>
+</div>
+</header>
+
+<main class="container">
+<!-- قسم حفظ البيانات -->
+<div class="save-data-section">
+<h3><i class="fas fa-save"></i> حفظ البيانات في ملف خارجي</h3>
+<p>يمكنك حفظ جميع بيانات الطلاب في ملف خارجي لاستخدامه في جهاز آخر أو كنسخة احتياطية</p>
+<button class="save-data-btn" id="saveDataToFileBtn"><i class="fas fa-download"></i> حفظ البيانات في ملف</button>
+</div>
+
+<div class="tabs">
+<div class="tab active" data-tab="follow"><i class="fas fa-clipboard-list"></i> سجل المتابعة</div>
+<div class="tab" data-tab="attendance"><i class="fas fa-calendar-check"></i> متابعة الغياب</div>
+<div class="tab" data-tab="grades"><i class="fas fa-chart-bar"></i> سجل الدرجات</div>
+<div class="tab" data-tab="reports"><i class="fas fa-file-alt"></i> التقارير</div>
+<div class="tab" data-tab="import"><i class="fas fa-file-import"></i> استيراد/تصدير</div>
+</div>
+
+<!-- سجل المتابعة -->
+<section class="card" id="followTab">
+<!-- مربع بحث الطالب -->
+<div class="student-search-container">
+<h4><i class="fas fa-search"></i> بحث عن طالب</h4>
+<div class="form-row">
+<div class="form-col autocomplete-container">
+<input type="text" id="studentSearchInput" placeholder="أدخل الحروف الأولى من اسم الطالب">
+<div class="autocomplete-dropdown" id="studentAutocompleteDropdown"></div>
+</div>
+<div class="form-col">
+<button class="btn" id="studentSearchBtn"><i class="fas fa-search"></i> بحث</button>
+</div>
+</div>
+
+<div class="student-search-result" id="studentSearchResult">
+<div class="student-info-card">
+<div class="student-info-header">
+<div>
+<div class="name" id="searchResultName">-</div>
+<div class="class" id="searchResultClass">-</div>
+</div>
+</div>
+
+<div class="student-stats-grid">
+<div class="student-stat-item success">
+<div class="value" id="searchResultPresent">0</div>
+<div class="label">أيام الحضور</div>
+</div>
+<div class="student-stat-item danger">
+<div class="value" id="searchResultAbsent">0</div>
+<div class="label">أيام الغياب</div>
+</div>
+<div class="student-stat-item warning">
+<div class="value" id="searchResultLate">0</div>
+<div class="label">أيام التأخر</div>
+</div>
+<div class="student-stat-item">
+<div class="value" id="searchResultWarnings">-</div>
+<div class="label">الإنذارات</div>
+</div>
+</div>
+
+<div class="attendance-history">
+<h5>سجل الحضور والغياب</h5>
+<div class="attendance-history-table">
+<table>
+<thead>
+<tr>
+<th>التاريخ</th>
+<th>الحالة</th>
+<th>السلوك</th>
+<th>الإجراء</th>
+</tr>
+</thead>
+<tbody id="attendanceHistoryBody">
+<tr>
+<td colspan="4" class="muted">لا توجد سجلات</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="grades-history">
+<h5>سجل الدرجات</h5>
+<div class="grades-history-table">
+<table>
+<thead>
+<tr>
+<th>الاختبار</th>
+<th>الدرجة</th>
+</tr>
+</thead>
+<tbody id="gradesHistoryBody">
+<tr>
+<td colspan="2" class="muted">لا توجد درجات</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="stats-container">
+<div class="stat-card primary">
+<i class="fas fa-users"></i>
+<div class="value" id="totalStudents">0</div>
+<div class="label">إجمالي الطلاب</div>
+</div>
+<div class="stat-card success">
+<i class="fas fa-user-check"></i>
+<div class="value" id="presentToday">0</div>
+<div class="label">حاضرون اليوم</div>
+</div>
+<div class="stat-card warning">
+<i class="fas fa-user-times"></i>
+<div class="value" id="absentToday">0</div>
+<div class="label">غائبون اليوم</div>
+</div>
+<div class="stat-card danger">
+<i class="fas fa-exclamation-triangle"></i>
+<div class="value" id="behaviorIssues">0</div>
+<div class="label">مشاكل سلوكية</div>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-col">
+<h4><i class="fas fa-plus-circle"></i> إضافة متابعة يومية</h4>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-col">
+<label for="fnName">اسم الطالب</label>
+<input id="fnName" placeholder="أدخل اسم الطالب">
+</div>
+<div class="form-col">
+<label for="fnClass">الشعبة</label>
+<select id="fnClass">
+<option value="">اختر الشعبة</option>
+<option value="الثالث أ">الثالث أ</option>
+<option value="الثالث ب">الثالث ب</option>
+<option value="الثالث ج">الثالث ج</option>
+</select>
+</div>
+<div class="form-col">
+<label for="followDate">التاريخ</label>
+<input type="date" id="followDate">
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-col">
+<label for="dailyStatus">حالة الحضور والغياب</label>
+<select id="dailyStatus">
+<option value="حاضر" selected>حاضر</option>
+<option value="غائب">غائب</option>
+<option value="متأخر">متأخر</option>
+<option value="لم يحل الواجب">لم يحل الواجب</option>
+</select>
+</div>
+<div class="form-col">
+<label for="dailyBehavior">السلوك</label>
+<select id="dailyBehavior">
+<option value="">اختر السلوك</option>
+<option value="ممتاز">ممتاز</option>
+<option value="جيد جداً">جيد جداً</option>
+<option value="جيد">جيد</option>
+<option value="مقبول">مقبول</option>
+<option value="يضحك">يضحك</option>
+<option value="يتكلم">يتكلم</option>
+<option value="يضرب صديقه">يضرب صديقه</option>
+<option value="ينام">ينام</option>
+<option value="متاخر">متاخر</option>
+</select>
+</div>
+<div class="form-col">
+<label for="dailyAction">الإجراء</label>
+<select id="dailyAction">
+<option value="">اختر الإجراء</option>
+<option value="لا يوجد">لا يوجد</option>
+<option value="تنبيه شفوي">تنبيه شفوي</option>
+<option value="تنبيه كتابي">تنبيه كتابي</option>
+<option value="الطرد">الطرد</option>
+<option value="استدعاء ولي الأمر">استدعاء ولي الأمر</option>
+<option value="توجية شكر">توجية شكر</option>
+</select>
+</div>
+<div class="form-col">
+<label>&nbsp;</label>
+<button class="btn" id="addBtn"><i class="fas fa-plus"></i> أضف</button>
+</div>
+</div>
+
+<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem">
+<button class="btn ghost" id="followExport"><i class="fas fa-file-csv"></i> تصدير CSV</button>
+<button class="btn" id="printFollow"><i class="fas fa-print"></i> طباعة</button>
+<button class="btn-success" id="addMultipleBtn"><i class="fas fa-users"></i> إضافة متعددة</button>
+<button class="btn-primary" id="saveDataBtn"><i class="fas fa-save"></i> حفظ البيانات</button>
+</div>
+
+<div id="followList"></div>
+</section>
+
+<!-- متابعة الغياب -->
+<section class="card" id="attendanceTab" style="display:none">
+<!-- مربع بحث الشهر -->
+<div class="month-search-container">
+<h4><i class="fas fa-search"></i> بحث عن شهر سابق</h4>
+<div class="form-row">
+<div class="form-col">
+<select id="searchMonthSelect">
+<option value="">اختر الشهر</option>
+<option value="1">يناير</option>
+<option value="2">فبراير</option>
+<option value="3">مارس</option>
+<option value="4">أبريل</option>
+<option value="5">مايو</option>
+<option value="6">يونيو</option>
+<option value="7">يوليو</option>
+<option value="8">أغسطس</option>
+<option value="9">سبتمبر</option>
+<option value="10">أكتوبر</option>
+<option value="11">نوفمبر</option>
+<option value="12">ديسمبر</option>
+</select>
+</div>
+<div class="form-col">
+<select id="searchYearSelect">
+<option value="">اختر السنة</option>
+<option value="2023">2023</option>
+<option value="2024">2024</option>
+<option value="2025" selected>2025</option>
+<option value="2026">2026</option>
+</select>
+</div>
+<div class="form-col">
+<button class="btn" id="monthSearchBtn"><i class="fas fa-search"></i> بحث</button>
+</div>
+</div>
+
+<div class="month-search-result" id="monthSearchResult">
+<div class="month-info-card">
+<div class="month-info-header">
+<div class="month-name" id="searchResultMonth">-</div>
+</div>
+
+<div class="month-stats-grid">
+<div class="month-stat-item success">
+<div class="value" id="searchMonthPresent">0</div>
+<div class="label">أيام الحضور</div>
+</div>
+<div class="month-stat-item danger">
+<div class="value" id="searchMonthAbsent">0</div>
+<div class="label">أيام الغياب</div>
+</div>
+<div class="month-stat-item warning">
+<div class="value" id="searchMonthLate">0</div>
+<div class="label">أيام التأخر</div>
+</div>
+<div class="month-stat-item">
+<div class="value" id="searchMonthStudents">0</div>
+<div class="label">عدد الطلاب</div>
+</div>
+</div>
+
+<div class="month-students-list">
+<h5>قائمة الطلاب</h5>
+<div class="month-students-table">
+<table>
+<thead>
+<tr>
+<th>اسم الطالب</th>
+<th>الشعبة</th>
+<th>أيام الحضور</th>
+<th>أيام الغياب</th>
+<th>أيام التأخر</th>
+</tr>
+</thead>
+<tbody id="monthStudentsBody">
+<tr>
+<td colspan="5" class="muted">لا توجد بيانات</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- تقويم العطل الرسمية -->
+<div class="holiday-calendar-container">
+<h4><i class="fas fa-calendar-alt"></i> تقويم العطل الرسمية</h4>
+<div class="form-row">
+<div class="form-col">
+<select id="holidayYearSelect">
+<option value="2025" selected>2025</option>
+<option value="2026">2026</option>
+</select>
+</div>
+<div class="form-col">
+<button class="btn" id="showHolidaysBtn"><i class="fas fa-calendar-check"></i> عرض العطل</button>
+</div>
+</div>
+
+<div class="holiday-calendar-result" id="holidayCalendarResult">
+<div class="holiday-info-card">
+<div class="holiday-info-header">
+<div class="year-name" id="holidayYearName">-</div>
+</div>
+
+<div class="holiday-list">
+<h5>العطل الرسمية</h5>
+<div class="holiday-list-table">
+<table>
+<thead>
+<tr>
+<th>التاريخ</th>
+<th>اسم العطلة</th>
+<th>النوع</th>
+</tr>
+</thead>
+<tbody id="holidayListBody">
+<tr>
+<td colspan="3" class="muted">لا توجد عطل</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="month-selector">
+<div class="form-col">
+<label for="attendanceMonth">اختر الشهر</label>
+<select id="attendanceMonth">
+<option value="1">يناير</option>
+<option value="2">فبراير</option>
+<option value="3">مارس</option>
+<option value="4">أبريل</option>
+<option value="5">مايو</option>
+<option value="6">يونيو</option>
+<option value="7">يوليو</option>
+<option value="8">أغسطس</option>
+<option value="9">سبتمبر</option>
+<option value="10">أكتوبر</option>
+<option value="11">نوفمبر</option>
+<option value="12">ديسمبر</option>
+</select>
+</div>
+<div class="form-col">
+<label for="attendanceClass">اختر الشعبة</label>
+<select id="attendanceClass">
+<option value="">جميع الشعب</option>
+<option value="الثالث أ">الثالث أ</option>
+<option value="الثالث ب">الثالث ب</option>
+<option value="الثالث ج">الثالث ج</option>
+</select>
+</div>
+<div class="form-col">
+<label>&nbsp;</label>
+<button class="btn" id="viewAttendanceBtn"><i class="fas fa-search"></i> عرض الغياب</button>
+</div>
+</div>
+
+<div class="student-monthly-attendance">
+<h4><i class="fas fa-users"></i> غياب الطلاب</h4>
+<div id="studentMonthlyAttendance"></div>
+</div>
+
+<div class="archive-section">
+<h4><i class="fas fa-archive"></i> حفظ الشهر الحالي والبدء بشهر جديد</h4>
+<p>يمكنك حفظ بيانات الشهر الحالي وبدء شهر جديد. سيتم الاحتفاظ بالبيانات المحفوظة ويمكنك الوصول إليها لاحقًا.</p>
+<div style="display:flex;gap:1rem;margin-top:1rem">
+<button class="btn-success" id="saveMonthBtn"><i class="fas fa-save"></i> حفظ الشهر الحالي</button>
+<button class="btn-primary" id="startNewMonthBtn"><i class="fas fa-plus-circle"></i> بدء شهر جديد</button>
+</div>
+
+<div class="archive-list" id="archiveList">
+<p class="small muted">لا توجد أشهر محفوظة بعد</p>
+</div>
+</div>
+</section>
+
+<!-- سجل الدرجات -->
+<section class="card" id="gradesTab" style="display:none">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap">
+<div class="small">اعدادات الفصل: الفصل الأول 1/10/2025 - 15/1/2026</div>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap">
+<button class="btn ghost" id="gradesExport"><i class="fas fa-file-csv"></i> تصدير CSV</button>
+<button class="btn" id="printGrades"><i class="fas fa-print"></i> طباعة</button>
+<button class="btn-success" id="bulkGradesBtn"><i class="fas fa-edit"></i> إدخال جماعي للدرجات</button>
+</div>
+</div>
+<div id="gradesList"></div>
+</section>
+
+<!-- التقارير -->
+<section class="card" id="reportsTab" style="display:none">
+<div class="report-header">
+<h3 class="report-title"><i class="fas fa-chart-line"></i> التقارير الشهرية</h3>
+<div class="report-filters">
+<select id="reportMonth">
+<option value="1">يناير</option>
+<option value="2">فبراير</option>
+<option value="3">مارس</option>
+<option value="4">أبريل</option>
+<option value="5">مايو</option>
+<option value="6">يونيو</option>
+<option value="7">يوليو</option>
+<option value="8">أغسطس</option>
+<option value="9">سبتمبر</option>
+<option value="10">أكتوبر</option>
+<option value="11">نوفمبر</option>
+<option value="12">ديسمبر</option>
+</select>
+<select id="reportClass">
+<option value="">جميع الشعب</option>
+<option value="الثالث أ">الثالث أ</option>
+<option value="الثالث ب">الثالث ب</option>
+<option value="الثالث ج">الثالث ج</option>
+</select>
+<button class="btn" id="generateReport"><i class="fas fa-sync-alt"></i> إنشاء التقرير</button>
+</div>
+</div>
+
+<div class="stats-container">
+<div class="stat-card primary">
+<i class="fas fa-percentage"></i>
+<div class="value" id="attendanceRate">0%</div>
+<div class="label">نسبة الحضور</div>
+</div>
+<div class="stat-card success">
+<i class="fas fa-trophy"></i>
+<div class="value" id="avgGrade">0</div>
+<div class="label">متوسط الدرجات</div>
+</div>
+<div class="stat-card warning">
+<i class="fas fa-user-graduate"></i>
+<div class="value" id="topPerformer">-</div>
+<div class="label">أفضل طالب</div>
+</div>
+<div class="stat-card danger">
+<i class="fas fa-exclamation-circle"></i>
+<div class="value" id="behaviorIncidents">0</div>
+<div class="label">حوادث سلوكية</div>
+</div>
+</div>
+
+<div class="report-container">
+<h4><i class="fas fa-chart-bar"></i> ملخص الشهر</h4>
+<div id="monthlySummary"></div>
+
+<div class="attendance-details">
+<h4><i class="fas fa-user-check"></i> تفاصيل الحضور والغياب</h4>
+<div class="attendance-summary">
+<div class="attendance-stat">
+<div class="value" id="totalPresentDays">0</div>
+<div class="label">إجمالي أيام الحضور</div>
+</div>
+<div class="attendance-stat">
+<div class="value" id="totalAbsentDays">0</div>
+<div class="label">إجمالي أيام الغياب</div>
+</div>
+<div class="attendance-stat">
+<div class="value" id="totalLateDays">0</div>
+<div class="label">إجمالي أيام التأخر</div>
+</div>
+<div class="attendance-stat">
+<div class="value" id="totalNoHomeworkDays">0</div>
+<div class="label">إجمالي أيام عدم حل الواجب</div>
+</div>
+</div>
+</div>
+
+<h4 style="margin-top:1.5rem"><i class="fas fa-table"></i> تفصيلي الطلاب</h4>
+<div id="monthlyDetails"></div>
+</div>
+
+<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem">
+<button class="btn ghost" id="exportReport"><i class="fas fa-file-csv"></i> تصدير التقرير</button>
+<button class="btn" id="printReport"><i class="fas fa-print"></i> طباعة التقرير</button>
+</div>
+</section>
+
+<!-- استيراد/تصدير -->
+<section class="card" id="importTab" style="display:none">
+<h3><i class="fas fa-file-import"></i> استيراد وتصدير البيانات</h3>
+
+<div class="form-row">
+<div class="form-col">
+<h4><i class="fas fa-file-upload"></i> استيراد قائمة الطلاب</h4>
+<p class="small">يمكنك استيراد قائمة الطلاب من ملف CSV أو Excel أو ملف نصي. يجب أن يحتوي الملف على عمود "اسم الطالب" وعمود "الشعبة".</p>
+<div class="file-upload">
+<input type="file" id="importFile" accept=".csv,.xlsx,.xls,.txt,.json">
+<label for="importFile" class="file-upload-label">
+<i class="fas fa-cloud-upload-alt"></i>
+<span>اختر ملف للاستيراد (CSV, Excel, Text, JSON)</span>
+</label>
+</div>
+<button class="btn" id="importBtn" style="margin-top:1rem;width:100%"><i class="fas fa-file-import"></i> استيراد الطلاب</button>
+
+<div id="importPreview" class="import-preview" style="display:none">
+<h4>معاينة البيانات المستوردة</h4>
+<div id="previewContent"></div>
+</div>
+
+<div id="importSummary" class="import-summary" style="display:none">
+<h4>ملخص عملية الاستيراد</h4>
+<ul id="summaryList"></ul>
+</div>
+
+<div class="file-format-info">
+<h4>تنسيقات الملفات المدعومة:</h4>
+<ul>
+<li><strong>ملفات CSV:</strong> ملفات نصية مفصولة بفواصل</li>
+<li><strong>ملفات Excel:</strong> (.xlsx, .xls) مع أعمدة "اسم الطالب" و "الشعبة"</li>
+<li><strong>ملفات نصية:</strong> (.txt) بنفس تنسيق CSV أو كل سطر يحتوي على: اسم الطالب, الشعبة</li>
+<li><strong>ملفات JSON:</strong> (.json) بتنسيق البيانات الكامل للنظام</li>
+</ul>
+</div>
+</div>
+
+<div class="form-col">
+<h4><i class="fas fa-file-download"></i> تصدير البيانات</h4>
+<p class="small">يمكنك تصدير جميع بيانات الطلاب كملف للنسخ الاحتياطي أو للتحليل في برامج أخرى.</p>
+<button class="btn ghost" id="exportAllBtn" style="width:100%;margin-top:1rem"><i class="fas fa-file-csv"></i> تصدير جميع البيانات (CSV)</button>
+<button class="btn ghost" id="exportStudentsBtn" style="width:100%;margin-top:.5rem"><i class="fas fa-users"></i> تصدير قائمة الطلاب فقط (CSV)</button>
+<button class="btn ghost" id="exportJsonBtn" style="width:100%;margin-top:.5rem"><i class="fas fa-file-code"></i> تصدير جميع البيانات (JSON)</button>
+</div>
+</div>
+
+<div class="form-row" style="margin-top:1.5rem">
+<div class="form-col">
+<h4><i class="fas fa-database"></i> إدارة البيانات</h4>
+<p class="small">يمكنك مسح جميع البيانات أو استعادة البيانات من نسخة احتياطية.</p>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap">
+<button class="btn-danger" id="clearDataBtn"><i class="fas fa-trash-alt"></i> مسح جميع البيانات</button>
+<button class="btn ghost" id="restoreDataBtn"><i class="fas fa-undo"></i> استعادة البيانات</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<!-- نافذة إضافة متعددة -->
+<div class="modal" id="addMultipleModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2><i class="fas fa-users"></i> إضافة متابعة متعددة</h2>
+<button class="close-btn" id="closeMultipleModal">&times;</button>
+</div>
+
+<div class="form-group">
+<label for="multiDate">التاريخ</label>
+<input type="date" id="multiDate">
+</div>
+
+<div class="form-group">
+<label for="multiClass">الشعبة</label>
+<select id="multiClass">
+<option value="">جميع الشعب</option>
+<option value="الثالث أ">الثالث أ</option>
+<option value="الثالث ب">الثالث ب</option>
+<option value="الثالث ج">الثالث ج</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>حالة الحضور والغياب</label>
+<div style="display:flex;gap:1rem;flex-wrap:wrap">
+<label style="display:flex;align-items:center;gap:.5rem">
+<input type="radio" name="multiStatus" value="حاضر" checked> حاضر
+</label>
+<label style="display:flex;align-items:center;gap:.5rem">
+<input type="radio" name="multiStatus" value="غائب"> غائب
+</label>
+<label style="display:flex;align-items:center;gap:.5rem">
+<input type="radio" name="multiStatus" value="متأخر"> متأخر
+</label>
+<label style="display:flex;align-items:center;gap:.5rem">
+<input type="radio" name="multiStatus" value="لم يحل الواجب"> لم يحل الواجب
+</label>
+</div>
+</div>
+
+<div class="form-group">
+<label>السلوك</label>
+<select id="multiBehavior">
+<option value="">اختر السلوك</option>
+<option value="ممتاز">ممتاز</option>
+<option value="جيد جداً">جيد جداً</option>
+<option value="جيد">جيد</option>
+<option value="مقبول">مقبول</option>
+<option value="يضحك">يضحك</option>
+<option value="يتكلم">يتكلم</option>
+<option value="يضرب صديقه">يضرب صديقه</option>
+<option value="ينام">ينام</option>
+<option value="متاخر">متاخر</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>الإجراء</label>
+<select id="multiAction">
+<option value="">اختر الإجراء</option>
+<option value="لا يوجد">لا يوجد</option>
+<option value="تنبيه شفوي">تنبيه شفوي</option>
+<option value="تنبيه كتابي">تنبيه كتابي</option>
+<option value="الطرد">الطرد</option>
+<option value="شكرتوجية">توجية شكر</option>
+<option value="استدعاء ولي الأمر">استدعاء ولي الأمر</option>
+</select>
+</div>
+
+<div class="modal-footer">
+<button class="btn ghost" id="cancelMultipleBtn">إلغاء</button>
+<button class="btn" id="saveMultipleBtn">حفظ</button>
+</div>
+</div>
+</div>
+
+<!-- نافذة إدخال جماعي للدرجات -->
+<div class="modal" id="bulkGradesModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2><i class="fas fa-edit"></i> إدخال جماعي للدرجات</h2>
+<button class="close-btn" id="closeBulkGradesModal">&times;</button>
+</div>
+
+<div class="form-group">
+<label for="bulkExamType">نوع الاختبار</label>
+<select id="bulkExamType">
+<option value="">اختر نوع الاختبار</option>
+<option value="f1m1">شهري1 ف1</option>
+<option value="f1m2">شهري2 ف1</option>
+<option value="mid">نصف السنة</option>
+<option value="f2m1">شهري1 ف2</option>
+<option value="f2m2">شهري2 ف2</option>
+<option value="final">نهاية السنة</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="bulkClass">الشعبة</label>
+<select id="bulkClass">
+<option value="">جميع الشعب</option>
+<option value="الثالث أ">الثالث أ</option>
+<option value="الثالث ب">الثالث ب</option>
+<option value="الثالث ج">الثالث ج</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>درجات الطلاب</label>
+<div id="bulkGradesList" style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:1rem">
+<p class="small muted">يرجى اختيار نوع الاختبار والشعبة أولاً</p>
+</div>
+</div>
+
+<div class="modal-footer">
+<button class="btn ghost" id="cancelBulkGradesBtn">إلغاء</button>
+<button class="btn" id="saveBulkGradesBtn">حفظ الدرجات</button>
+</div>
+</div>
+</div>
+
+<!-- نافذة تأكيد مسح البيانات -->
+<div class="modal" id="confirmClearModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2><i class="fas fa-exclamation-triangle"></i> تأكيد مسح البيانات</h2>
+<button class="close-btn" id="closeConfirmClearModal">&times;</button>
+</div>
+
+<p>هل أنت متأكد من أنك تريد مسح جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه.</p>
+
+<div class="modal-footer">
+<button class="btn ghost" id="cancelClearBtn">إلغاء</button>
+<button class="btn-danger" id="confirmClearBtn">مسح البيانات</button>
+</div>
+</div>
+</div>
+
+<!-- إشعارات -->
+<div class="notification" id="notification">
+<i class="fas fa-info-circle"></i>
+<div class="notification-content">
+<div class="notification-title"></div>
+<div class="notification-message"></div>
+</div>
+</div>
+
+<!-- زر التثبيت للتطبيق -->
+<button class="install-btn" id="installButton" style="display: none;">
+<i class="fas fa-download"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+// تسجيل Service Worker للـ PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('ServiceWorker registration successful');
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed');
+      });
+  });
+}
+
+// متغيرات التطبيق
+const KEY='school_third_2025',state=JSON.parse(localStorage.getItem(KEY)||'{"students":[],"archivedMonths":[]}');
+
+// تحديد فترة الدراسة
+const ACADEMIC_YEAR_START = new Date('2025-09-21');
+const ACADEMIC_YEAR_END = new Date('2026-05-01');
+
+// تحديد العطل الرسمية للعراق
+const HOLIDAYS_2025 = [
+{ date: '2025-01-01', name: 'رأس السنة الميلادية', type: 'ميلادية' },
+{ date: '2025-01-06', name: 'عيد الجيش العراقي', type: 'وطنية' },
+{ date: '2025-03-21', name: 'عيد نوروز', type: 'وطنية' },
+{ date: '2025-05-01', name: 'عيد العمال العالمي', type: 'ميلادية' },
+{ date: '2025-07-16', name: 'ذكرى الثورة العراقية', type: 'وطنية' },
+{ date: '2025-10-03', name: 'العيد الوطني العراقي', type: 'وطنية' },
+{ date: '2025-12-10', name: 'يوم النصر العراقي', type: 'وطنية' },
+{ date: '2025-12-25', name: 'عيد الميلاد المجيد', type: 'ميلادية' },
+// العطل الهجرية (تقريبية)
+{ date: '2025-03-31', name: 'عيد الفطر', type: 'هجرية' },
+{ date: '2025-04-01', name: 'عطلة عيد الفطر', type: 'هجرية' },
+{ date: '2025-04-02', name: 'عطلة عيد الفطر', type: 'هجرية' },
+{ date: '2025-06-07', name: 'عيد الأضحى', type: 'هجرية' },
+{ date: '2025-06-08', name: 'عطلة عيد الأضحى', type: 'هجرية' },
+{ date: '2025-06-09', name: 'عطلة عيد الأضحى', type: 'هجرية' },
+{ date: '2025-06-15', name: 'عيد الغدير', type: 'هجرية' },
+{ date: '2025-07-27', name: 'رأس السنة الهجرية', type: 'هجرية' },
+{ date: '2025-08-05', name: 'يوم عاشوراء', type: 'هجرية' },
+{ date: '2025-09-16', name: 'المولد النبوي الشريف', type: 'هجرية' }
+];
+
+const HOLIDAYS_2026 = [
+{ date: '2026-01-01', name: 'رأس السنة الميلادية', type: 'ميلادية' },
+{ date: '2026-01-06', name: 'عيد الجيش العراقي', type: 'وطنية' },
+{ date: '2026-03-21', name: 'عيد نوروز', type: 'وطنية' },
+{ date: '2026-05-01', name: 'عيد العمال العالمي', type: 'ميلادية' },
+{ date: '2026-07-16', name: 'ذكرى الثورة العراقية', type: 'وطنية' },
+{ date: '2026-10-03', name: 'العيد الوطني العراقي', type: 'وطنية' },
+{ date: '2026-12-10', name: 'يوم النصر العراقي', type: 'وطنية' },
+{ date: '2026-12-25', name: 'عيد الميلاد المجيد', type: 'ميلادية' },
+// العطل الهجرية (تقريبية)
+{ date: '2026-03-20', name: 'عيد الفطر', type: 'هجرية' },
+{ date: '2026-03-21', name: 'عطلة عيد الفطر', type: 'هجرية' },
+{ date: '2026-03-22', name: 'عطلة عيد الفطر', type: 'هجرية' },
+{ date: '2026-05-27', name: 'عيد الأضحى', type: 'هجرية' },
+{ date: '2026-05-28', name: 'عطلة عيد الأضحى', type: 'هجرية' },
+{ date: '2026-05-29', name: 'عطلة عيد الأضحى', type: 'هجرية' },
+{ date: '2026-06-04', name: 'عيد الغدير', type: 'هجرية' },
+{ date: '2026-07-17', name: 'رأس السنة الهجرية', type: 'هجرية' },
+{ date: '2026-07-26', name: 'يوم عاشوراء', type: 'هجرية' },
+{ date: '2026-09-05', name: 'المولد النبوي الشريف', type: 'هجرية' }
+];
+
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function esc(s){return String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function toNum(v){const n=parseFloat(v);return isNaN(n)?null:n;}
+function round2(v){return(Math.round(v*100)/100).toFixed(2);}
+
+// تحديث القيم القديمة إلى القيم الجديدة
+function updateOldAttendanceValues() {
+let updated = false;
+
+state.students.forEach(student => {
+// تحديث بيانات الحضور
+Object.keys(student.attendance || {}).forEach(date => {
+if (student.attendance[date] === 'محضر') {
+student.attendance[date] = 'حاضر';
+updated = true;
+} else if (student.attendance[date] === 'غير محضر') {
+student.attendance[date] = 'غائب';
+updated = true;
+}
+});
+});
+
+if (updated) {
+save();
+showNotification('نجاح', 'تم تحديث البيانات القديمة إلى القيم الجديدة', 'success');
+}
+}
+
+// تعيين تاريخ اليوم كافتراضي
+document.getElementById('followDate').valueAsDate = new Date();
+document.getElementById('multiDate').valueAsDate = new Date();
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+document.getElementById('followTab').style.display=t.dataset.tab==='follow'?'block':'none';
+document.getElementById('attendanceTab').style.display=t.dataset.tab==='attendance'?'block':'none';
+document.getElementById('gradesTab').style.display=t.dataset.tab==='grades'?'block':'none';
+document.getElementById('reportsTab').style.display=t.dataset.tab==='reports'?'block':'none';
+document.getElementById('importTab').style.display=t.dataset.tab==='import'?'block':'none';
+
+if(t.dataset.tab==='follow') renderFollow();
+if(t.dataset.tab==='attendance') renderAttendance();
+if(t.dataset.tab==='grades') renderGrades();
+if(t.dataset.tab==='reports') generateReport();
+}));
+
+// إشعارات
+function showNotification(title, message, type = 'info') {
+const notification = document.getElementById('notification');
+const icon = notification.querySelector('i');
+const titleEl = notification.querySelector('.notification-title');
+const messageEl = notification.querySelector('.notification-message');
+
+// إزالة جميع الفئات السابقة
+notification.classList.remove('success', 'error', 'info', 'warning');
+
+// إضافة الفئة الجديدة
+notification.classList.add(type);
+
+// تحديث الأيقونة
+if (type === 'success') {
+icon.className = 'fas fa-check-circle';
+} else if (type === 'error') {
+icon.className = 'fas fa-times-circle';
+} else if (type === 'warning') {
+icon.className = 'fas fa-exclamation-triangle';
+} else {
+icon.className = 'fas fa-info-circle';
+}
+
+// تحديث المحتوى
+titleEl.textContent = title;
+messageEl.textContent = message;
+
+// إظهار الإشعار
+notification.classList.add('show');
+
+// إخفاء الإشعار بعد 5 ثواني
+setTimeout(() => {
+notification.classList.remove('show');
+}, 5000);
+}
+
+// حساب عدد أيام الغياب للطالب في السنة
+function calculateYearlyAbsences(student) {
+let absentDays = 0;
+
+Object.keys(student.attendance || {}).forEach(date => {
+if (student.attendance[date] === 'غائب') {
+absentDays++;
+}
+});
+
+return absentDays;
+}
+
+// الحصول على مستوى الإنذار للطالب
+function getWarningLevel(student) {
+const absentDays = calculateYearlyAbsences(student);
+
+if (absentDays >= 26) {
+return {
+level: 'fail',
+text: 'راسب',
+class: 'warning-fail'
+};
+} else if (absentDays >= 21) {
+return {
+level: 'final',
+text: 'إنذار نهائي',
+class: 'warning-final'
+};
+} else if (absentDays >= 14) {
+return {
+level: 'second',
+text: 'إنذار ثانوي',
+class: 'warning-second'
+};
+} else if (absentDays >= 7) {
+return {
+level: 'first',
+text: 'إنذار أولي',
+class: 'warning-first'
+};
+}
+
+return null;
+}
+
+// التحقق إذا كان التاريخ هو يوم دراسي
+function isSchoolDay(date) {
+const day = new Date(date);
+
+// التحقق إذا كان التاريخ خارج فترة الدراسة
+if (day < ACADEMIC_YEAR_START || day > ACADEMIC_YEAR_END) {
+return false;
+}
+
+// التحقق إذا كان يوم الجمعة أو السبت
+if (day.getDay() === 5 || day.getDay() === 6) {
+return false;
+}
+
+// تحويل التاريخ إلى صيغة YYYY-MM-DD للمقارنة مع العطل
+const dateStr = day.toISOString().split('T')[0];
+
+// التحقق إذا كان التاريخ عطلة رسمية
+const holidays = day.getFullYear() === 2025 ? HOLIDAYS_2025 : HOLIDAYS_2026;
+if (holidays.some(holiday => holiday.date === dateStr)) {
+return false;
+}
+
+return true;
+}
+
+// الحصول على اسم العطلة إذا كان التاريخ عطلة
+function getHolidayName(date) {
+const dateStr = date.toISOString().split('T')[0];
+const holidays = date.getFullYear() === 2025 ? HOLIDAYS_2025 : HOLIDAYS_2026;
+const holiday = holidays.find(h => h.date === dateStr);
+return holiday ? holiday.name : null;
+}
+
+// الحصول على جميع العطل في سنة معينة
+function getHolidaysByYear(year) {
+return year === 2025 ? HOLIDAYS_2025 : HOLIDAYS_2026;
+}
+
+// إضافة طالب / متابعة
+document.getElementById('addBtn').onclick=function(){
+const name=document.getElementById('fnName').value.trim();
+if(!name) {
+showNotification('خطأ', 'يرجى كتابة اسم الطالب', 'error');
+return;
+}
+const cls=document.getElementById('fnClass').value.trim();
+const date=document.getElementById('followDate').value;
+const status=document.getElementById('dailyStatus').value;
+const behavior=document.getElementById('dailyBehavior').value;
+const action=document.getElementById('dailyAction').value;
+
+// التحقق إذا كان التاريخ يوم دراسي
+if (date && !isSchoolDay(date)) {
+const holidayName = getHolidayName(new Date(date));
+const dayOfWeek = new Date(date).getDay();
+let reason = 'يوم غير دراسي';
+
+if (dayOfWeek === 5) {
+reason = 'يوم الجمعة';
+} else if (dayOfWeek === 6) {
+reason = 'يوم السبت';
+} else if (holidayName) {
+reason = `عطلة (${holidayName})`;
+}
+
+showNotification('خطأ', `${reason} - لا يمكن تسجيل الحضور`, 'error');
+return;
+}
+
+// التحقق إذا كان الطالب موجود بالفعل
+let student = state.students.find(s => s.name === name && s.class === cls);
+
+if (!student) {
+student = {
+id:'s'+Math.random().toString(36).slice(2,8),
+name,
+class:cls,
+attendance:{},
+behaviorRecords:{},
+actionRecords:{},
+exams:{f1m1:'',f1m2:'',mid:'',f2m1:'',f2m2:'',final:''}
+};
+state.students.push(student);
+}
+
+// تحديث بيانات الطالب
+if (date) {
+student.attendance[date] = status || 'حاضر';
+student.behaviorRecords[date] = behavior || 'جيد';
+student.actionRecords[date] = action || '';
+}
+
+save();
+renderFollow();
+renderGrades();
+updateStats();
+
+// تفريغ الحقول
+document.getElementById('fnName').value='';
+document.getElementById('fnClass').value='';
+document.getElementById('dailyStatus').value='حاضر';
+document.getElementById('dailyBehavior').value='';
+document.getElementById('dailyAction').value='';
+
+showNotification('نجاح', 'تمت إضافة بيانات الطالب بنجاح', 'success');
+}
+
+// عرض قائمة المتابعة
+function renderFollow(){
+if(state.students.length===0){
+document.getElementById('followList').innerHTML='<div class="small muted">لا يوجد طلاب بعد.</div>';
+updateStats();
+return;
+}
+
+const date=document.getElementById('followDate').value||new Date().toISOString().slice(0,10);
+let html='<table><thead><tr><th>الاسم</th><th>الشعبة</th><th>التاريخ</th><th>حالة الحضور والغياب</th><th>السلوك</th><th>الإجراء</th><th>إنذارات الغياب</th><th>تعديل</th><th>حذف</th></tr></thead><tbody>';
+
+state.students.forEach(s=>{
+const att=s.attendance[date]||'غائب';
+const behavior=s.behaviorRecords[date]||'جيد';
+const action=s.actionRecords[date]||'';
+
+// تحديد فئة الصف بناءً على حالة الحضور
+let rowClass = '';
+if (att === 'حاضر') {
+rowClass = 'attendance-present';
+} else if (att === 'غائب') {
+rowClass = 'attendance-absent';
+} else if (att === 'متأخر' || att === 'لم يحل الواجب') {
+rowClass = 'attendance-late';
+}
+
+// الحصول على مستوى الإنذار
+const warning = getWarningLevel(s);
+let warningHtml = '';
+if (warning) {
+warningHtml = `<span class="warning-indicator ${warning.class}" title="${warning.text}">${warning.level.charAt(0).toUpperCase()}</span>`;
+}
+
+html+=`<tr class="${rowClass}">
+<td>${esc(s.name)}</td>
+<td>${esc(s.class)}</td>
+<td>${date}</td>
+<td><select onchange="updateAttendance('${s.id}','${date}',this.value)">
+<option value="حاضر" ${att==='حاضر'?'selected':''}>حاضر</option>
+<option value="غائب" ${att==='غائب'?'selected':''}>غائب</option>
+<option value="متأخر" ${att==='متأخر'?'selected':''}>متأخر</option>
+<option value="لم يحل الواجب" ${att==='لم يحل الواجب'?'selected':''}>لم يحل الواجب</option>
+</select></td>
+<td><select onchange="updateBehavior('${s.id}','${date}',this.value)">
+<option value="ممتاز" ${behavior==='ممتاز'?'selected':''}>ممتاز</option>
+<option value="جيد جداً" ${behavior==='جيد جداً'?'selected':''}>جيد جداً</option>
+<option value="جيد" ${behavior==='جيد'?'selected':''}>جيد</option>
+<option value="مقبول" ${behavior==='مقبول'?'selected':''}>مقبول</option>
+<option value="يضحك" ${behavior==='يضحك'?'selected':''}>يضحك</option>
+<option value="يتكلم" ${behavior==='يتكلم'?'selected':''}>يتكلم</option>
+<option value="يضرب صديقه" ${behavior==='يضرب صديقه'?'selected':''}>يضرب صديقه</option>
+<option value="ينام" ${behavior==='ينام'?'selected':''}>ينام</option>
+<option value="متاخر" ${behavior==='متاخر'?'selected':''}>متاخر</option>
+</select></td>
+<td><select onchange="updateAction('${s.id}','${date}',this.value)">
+<option value="" ${action===''?'selected':''}>لا يوجد</option>
+<option value="تنبيه شفوي" ${action==='تنبيه شفوي'?'selected':''}>تنبيه شفوي</option>
+<option value="تنبيه كتابي" ${action==='تنبيه كتابي'?'selected':''}>تنبيه كتابي</option>
+<option value="الطرد" ${action==='الطرد'?'selected':''}>الطرد</option>
+<option value="استدعاء ولي الأمر" ${action==='استدعاء ولي الأمر'?'selected':''}>استدعاء ولي الأمر</option>
+<option value="توجية شكر" ${action==='توجية شكر'?'selected':''}>توجية شكر</option>
+</select></td>
+<td>${warningHtml}</td>
+<td><button class="btn ghost" onclick="editStudent('${s.id}')"><i class="fas fa-edit"></i></button></td>
+<td><button class="btn-danger" onclick="removeStudent('${s.id}')"><i class="fas fa-trash"></i></button></td>
+</tr>`;
+});
+html+='</tbody></table>';
+document.getElementById('followList').innerHTML=html;
+updateStats();
+}
+
+// تحديث الإحصائيات
+function updateStats() {
+const date = document.getElementById('followDate').value || new Date().toISOString().slice(0,10);
+
+document.getElementById('totalStudents').textContent = state.students.length;
+
+let presentCount = 0;
+let absentCount = 0;
+let behaviorIssuesCount = 0;
+
+state.students.forEach(s => {
+const att = s.attendance[date] || 'غائب';
+if (att === 'حاضر') presentCount++;
+else absentCount++;
+
+const behavior = s.behaviorRecords[date] || 'جيد';
+if (['يضحك', 'يتكلم', 'يضرب صديقه', 'ينام','متاخر'].includes(behavior)) {
+behaviorIssuesCount++;
+}
+});
+
+document.getElementById('presentToday').textContent = presentCount;
+document.getElementById('absentToday').textContent = absentCount;
+document.getElementById('behaviorIssues').textContent = behaviorIssuesCount;
+}
+
+// تحديث الحضور
+window.updateAttendance = (id, date, value) => {
+// التحقق إذا كان التاريخ يوم دراسي
+if (!isSchoolDay(date)) {
+const holidayName = getHolidayName(new Date(date));
+const dayOfWeek = new Date(date).getDay();
+let reason = 'يوم غير دراسي';
+
+if (dayOfWeek === 5) {
+reason = 'يوم الجمعة';
+} else if (dayOfWeek === 6) {
+reason = 'يوم السبت';
+} else if (holidayName) {
+reason = `عطلة (${holidayName})`;
+}
+
+showNotification('خطأ', `${reason} - لا يمكن تسجيل الحضور`, 'error');
+renderFollow(); // إعادة عرض الجدول لاستعادة القيمة السابقة
+return;
+}
+
+const student = state.students.find(s => s.id === id);
+if (student) {
+student.attendance[date] = value;
+save();
+updateStats();
+renderFollow(); // إعادة عرض الجدول لتحديث الألوان
+showNotification('نجاح', 'تم تحديث حالة الحضور', 'success');
+}
+}
+
+// تحديث السلوك
+window.updateBehavior = (id, date, value) => {
+const student = state.students.find(s => s.id === id);
+if (student) {
+student.behaviorRecords[date] = value;
+save();
+updateStats();
+showNotification('نجاح', 'تم تحديث السلوك', 'success');
+}
+}
+
+// تحديث الإجراء
+window.updateAction = (id, date, value) => {
+const student = state.students.find(s => s.id === id);
+if (student) {
+student.actionRecords[date] = value;
+save();
+showNotification('نجاح', 'تم تحديث الإجراء', 'success');
+}
+}
+
+// حذف طالب
+window.removeStudent=id=>{
+if(!confirm('هل أنت متأكد من حذف الطالب؟'))return;
+state.students=state.students.filter(x=>x.id!==id);
+save();
+renderFollow();
+renderGrades();
+updateStats();
+showNotification('نجاح', 'تم حذف الطالب بنجاح', 'success');
+}
+
+// تعديل طالب
+window.editStudent=id=>{
+const student = state.students.find(s => s.id === id);
+if (student) {
+document.getElementById('fnName').value = student.name;
+document.getElementById('fnClass').value = student.class || '';
+
+// التمرير إلى قسم الإضافة
+document.getElementById('followTab').scrollIntoView({ behavior: 'smooth' });
+}
+}
+
+// تصدير CSV
+document.getElementById('followExport').onclick=function(){
+if(!state.students.length) {
+showNotification('خطأ', 'لا يوجد بيانات للتصدير', 'error');
+return;
+}
+
+const date=document.getElementById('followDate').value||new Date().toISOString().slice(0,10);
+const rows=[['الاسم','الشعبة','التاريخ','حالة الحضور والغياب','السلوك','الإجراء']];
+state.students.forEach(s=>{
+// تحويل القيم القديمة إلى الجديدة عند التصدير
+let att = s.attendance[date] || 'غائب';
+if (att === 'محضر') att = 'حاضر';
+if (att === 'غير محضر') att = 'غائب';
+
+const behavior=s.behaviorRecords[date]||'جيد';
+const action=s.actionRecords[date]||'';
+rows.push([s.name,s.class,date,att,behavior,action]);
+});
+downloadCSV(rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'),'attendance_'+date+'.csv');
+showNotification('نجاح', 'تم تصدير بيانات الحضور والسلوك', 'success');
+}
+
+document.getElementById('printFollow').onclick=function(){
+window.print();
+}
+
+// عرض بيانات الغياب الشهرية
+function renderAttendance() {
+const month = document.getElementById('attendanceMonth').value;
+const cls = document.getElementById('attendanceClass').value;
+
+if (!month) {
+showNotification('خطأ', 'يرجى اختيار الشهر', 'error');
+return;
+}
+
+// فلترة الطلاب حسب الشعبة
+const students = cls ? state.students.filter(s => s.class === cls) : state.students;
+
+if (students.length === 0) {
+document.getElementById('studentMonthlyAttendance').innerHTML = '<div class="small muted">لا يوجد طلاب في الشعبة المحددة</div>';
+return;
+}
+
+// حساب إحصائيات الغياب لكل طالب
+const studentStats = [];
+
+students.forEach(s => {
+const stats = {
+id: s.id,
+name: s.name,
+class: s.class,
+presentDays: 0,
+absentDays: 0,
+lateDays: 0,
+noHomeworkDays: 0,
+totalDays: 0
+};
+
+// حساب أيام الحضور والغياب للشهر المحدد
+Object.keys(s.attendance || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+stats.totalDays++;
+
+if (s.attendance[date] === 'حاضر') {
+stats.presentDays++;
+} else if (s.attendance[date] === 'غائب') {
+stats.absentDays++;
+} else if (s.attendance[date] === 'لم يحل الواجب') {
+stats.noHomeworkDays++;
+} else if (s.attendance[date] === 'متأخر') {
+stats.lateDays++;
+}
+}
+});
+
+// الحصول على مستوى الإنذار
+stats.warning = getWarningLevel(s);
+
+studentStats.push(stats);
+});
+
+// ترتيب الطلاب حسب عدد أيام الغياب (الأكثر غيابًا أولاً)
+studentStats.sort((a, b) => b.absentDays - a.absentDays);
+
+// عرض البيانات
+let html = '';
+
+studentStats.forEach(s => {
+let warningHtml = '';
+if (s.warning) {
+warningHtml = `<span class="warning-indicator ${s.warning.class}" title="${s.warning.text}">${s.warning.level.charAt(0).toUpperCase()}</span>`;
+}
+
+html += `
+<div class="student-attendance-card">
+<div class="student-info">
+<div>
+<div class="name">${esc(s.name)} ${warningHtml}</div>
+<div class="class">${esc(s.class)}</div>
+</div>
+</div>
+<div class="attendance-stats">
+<div class="attendance-stat-item">
+<div class="value">${s.totalDays}</div>
+<div class="label">إجمالي</div>
+</div>
+<div class="attendance-stat-item">
+<div class="value">${s.presentDays}</div>
+<div class="label">حضور</div>
+</div>
+<div class="attendance-stat-item">
+<div class="value">${s.absentDays}</div>
+<div class="label">غياب</div>
+</div>
+<div class="attendance-stat-item">
+<div class="value">${s.lateDays}</div>
+<div class="label">تأخر</div>
+</div>
+</div>
+</div>
+`;
+});
+
+document.getElementById('studentMonthlyAttendance').innerHTML = html;
+
+// عرض قائمة الأشهر المحفوظة
+renderArchivedMonths();
+}
+
+// عرض قائمة الأشهر المحفوظة
+function renderArchivedMonths() {
+const archivedMonths = state.archivedMonths || [];
+
+if (archivedMonths.length === 0) {
+document.getElementById('archiveList').innerHTML = '<p class="small muted">لا توجد أشهر محفوظة بعد</p>';
+return;
+}
+
+const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+let html = '';
+
+archivedMonths.forEach((month, index) => {
+const monthName = monthNames[month.month - 1];
+const date = new Date(month.savedAt);
+const dateStr = date.toLocaleDateString('ar-SA');
+
+html += `
+<div class="archive-item">
+<div>
+<div class="month-name">${monthName} ${month.year}</div>
+<div class="date">تم الحفظ في: ${dateStr}</div>
+</div>
+<div>
+<button class="btn ghost" onclick="viewArchivedMonth(${index})"><i class="fas fa-eye"></i> عرض</button>
+<button class="btn-danger" onclick="deleteArchivedMonth(${index})"><i class="fas fa-trash"></i> حذف</button>
+</div>
+</div>
+`;
+});
+
+document.getElementById('archiveList').innerHTML = html;
+}
+
+// حفظ الشهر الحالي
+document.getElementById('saveMonthBtn').onclick = function() {
+const month = parseInt(document.getElementById('attendanceMonth').value);
+const year = new Date().getFullYear();
+
+// إنشاء نسخة من البيانات الحالية
+const monthData = {
+month: month,
+year: year,
+savedAt: new Date().toISOString(),
+students: JSON.parse(JSON.stringify(state.students))
+};
+
+// التحقق إذا كان الشهر محفوظ بالفعل
+const existingIndex = state.archivedMonths.findIndex(m => m.month === month && m.year === year);
+
+if (existingIndex !== -1) {
+// تحديث الشهر الموجود
+state.archivedMonths[existingIndex] = monthData;
+showNotification('نجاح', 'تم تحديث بيانات الشهر الحالي', 'success');
+} else {
+// إضافة شهر جديد
+state.archivedMonths.push(monthData);
+showNotification('نجاح', 'تم حفظ بيانات الشهر الحالي بنجاح', 'success');
+}
+
+save();
+renderArchivedMonths();
+}
+
+// بدء شهر جديد
+document.getElementById('startNewMonthBtn').onclick = function() {
+if (!confirm('هل أنت متأكد من أنك تريد بدء شهر جديد؟ سيتم مسح بيانات الحضور والغياب الحالية.')) {
+return;
+}
+
+// مسح بيانات الحضور والغياب فقط
+state.students.forEach(s => {
+s.attendance = {};
+s.behaviorRecords = {};
+s.actionRecords = {};
+});
+
+save();
+renderFollow();
+renderAttendance();
+showNotification('نجاح', 'تم بدء شهر جديد بنجاح', 'success');
+}
+
+// عرض شهر محفوظ
+window.viewArchivedMonth = function(index) {
+const archivedMonth = state.archivedMonths[index];
+
+if (!archivedMonth) {
+showNotification('خطأ', 'الشهر المحدد غير موجود', 'error');
+return;
+}
+
+// استعادة بيانات الشهر المحفوظ مؤقتًا
+const currentStudents = JSON.parse(JSON.stringify(state.students));
+
+state.students = archivedMonth.students;
+
+// عرض البيانات
+renderAttendance();
+
+showNotification('نجاح', `تم عرض بيانات ${archivedMonth.month}/${archivedMonth.year}`, 'success');
+
+// إضافة زر لاستعادة البيانات الحالية
+const restoreBtn = document.createElement('button');
+restoreBtn.className = 'btn';
+restoreBtn.innerHTML = '<i class="fas fa-undo"></i> استعادة البيانات الحالية';
+restoreBtn.onclick = function() {
+state.students = currentStudents;
+renderAttendance();
+showNotification('نجاح', 'تم استعادة البيانات الحالية', 'success');
+this.remove();
+};
+
+document.querySelector('.student-monthly-attendance').prepend(restoreBtn);
+}
+
+// حذف شهر محفوظ
+window.deleteArchivedMonth = function(index) {
+if (!confirm('هل أنت متأكد من حذف هذا الشهر؟')) {
+return;
+}
+
+state.archivedMonths.splice(index, 1);
+save();
+renderArchivedMonths();
+showNotification('نجاح', 'تم حذف الشهر بنجاح', 'success');
+}
+
+// عرض الغياب عند النقر على زر العرض
+document.getElementById('viewAttendanceBtn').onclick = function() {
+renderAttendance();
+}
+
+// حفظ البيانات
+document.getElementById('saveDataBtn').onclick = function() {
+save();
+showNotification('نجاح', 'تم حفظ البيانات بنجاح', 'success');
+}
+
+// حفظ البيانات في ملف خارجي
+document.getElementById('saveDataToFileBtn').onclick = function() {
+// إنشاء نسخة من البيانات الحالية
+const dataCopy = JSON.parse(JSON.stringify(state));
+
+// إضافة معلومات إضافية
+dataCopy.exportDate = new Date().toISOString();
+dataCopy.appName = 'سجل متابعة ودرجات طلاب ثالث متوسط 2025-2026';
+dataCopy.appVersion = '1.0';
+
+// تحويل البيانات إلى نص JSON مع ضمان الترميز الصحيح
+const jsonData = JSON.stringify(dataCopy, null, 2);
+
+// إنشاء ملف للتحميل مع ترميز UTF-8
+const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8' });
+const url = URL.createObjectURL(blob);
+
+// إنشاء رابط للتحميل
+const a = document.createElement('a');
+a.href = url;
+
+// إنشاء اسم الملف مع التاريخ الحالي
+const now = new Date();
+const dateStr = now.toISOString().split('T')[0];
+a.download = `students_data_${dateStr}.json`;
+
+// إضافة الرابط للصفحة والنقر عليه
+document.body.appendChild(a);
+a.click();
+
+// تنظيف
+setTimeout(() => {
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+}, 0);
+
+showNotification('نجاح', 'تم حفظ البيانات في ملف خارجي بنجاح', 'success');
+}
+
+// عرض العطل الرسمية
+document.getElementById('showHolidaysBtn').onclick = function() {
+const year = document.getElementById('holidayYearSelect').value;
+
+if (!year) {
+showNotification('خطأ', 'يرجى اختيار السنة', 'error');
+return;
+}
+
+const holidays = getHolidaysByYear(parseInt(year));
+
+// عرض النتائج
+document.getElementById('holidayYearName').textContent = `العطل الرسمية للعام ${year}`;
+
+// عرض قائمة العطل
+const holidayListBody = document.getElementById('holidayListBody');
+let holidaysHtml = '';
+
+if (holidays.length === 0) {
+holidaysHtml = '<tr><td colspan="3" class="muted">لا توجد عطل</td></tr>';
+} else {
+holidays.forEach(holiday => {
+holidaysHtml += `
+<tr>
+<td class="holiday-date">${holiday.date}</td>
+<td class="holiday-name">${holiday.name}</td>
+<td class="holiday-type">${holiday.type}</td>
+</tr>
+`;
+});
+}
+
+holidayListBody.innerHTML = holidaysHtml;
+
+// إظهار نتائج البحث
+document.getElementById('holidayCalendarResult').classList.add('show');
+
+showNotification('نجاح', 'تم عرض العطل الرسمية', 'success');
+}
+
+// سجل الدرجات
+function renderGrades(){
+if(!state.students.length){
+document.getElementById('gradesList').innerHTML='<div class="small muted">لا يوجد طلاب.</div>';
+return;
+}
+
+let html='<table><thead><tr><th>الاسم</th><th>الشعبة</th><th>شهري1 ف1</th><th>شهري2 ف1</th><th>معدل ف1</th><th>نصف السنة</th><th>شهري1 ف2</th><th>شهري2 ف2</th><th>معدل ف2</th><th>نهاية السنة</th><th>المعدل السنوي</th><th>تعديل</th><th>حذف</th></tr></thead><tbody>';
+
+state.students.forEach(s=>{
+const e=s.exams||{};
+const n1=toNum(e.f1m1),n2=toNum(e.f1m2);
+const f1=(n1==null&&n2==null)?'':round2(((n1||0)+(n2||0))/((n1==null||n2==null)?1:2));
+const n3=toNum(e.f2m1),n4=toNum(e.f2m2);
+const f2=(n3==null&&n4==null)?'':round2(((n3||0)+(n4||0))/((n3==null||n4==null)?1:2));
+const mid=toNum(e.mid),finaln=toNum(e.final);
+const parts=[];
+if(f1!=='') parts.push(parseFloat(f1));
+if(!isNaN(mid)) parts.push(mid);
+if(f2!=='') parts.push(parseFloat(f2));
+if(!isNaN(finaln)) parts.push(finaln);
+const annual=parts.length?round2(parts.reduce((a,b)=>a+b,0)/parts.length):'';
+
+html+=`<tr>
+<td>${esc(s.name)}</td>
+<td>${esc(s.class)}</td>
+<td><input size=4 value="${e.f1m1||''}" onchange="setExam('${s.id}','f1m1',this.value)"></td>
+<td><input size=4 value="${e.f1m2||''}" onchange="setExam('${s.id}','f1m2',this.value)"></td>
+<td>${f1}</td>
+<td><input size=4 value="${e.mid||''}" onchange="setExam('${s.id}','mid',this.value)"></td>
+<td><input size=4 value="${e.f2m1||''}" onchange="setExam('${s.id}','f2m1',this.value)"></td>
+<td><input size=4 value="${e.f2m2||''}" onchange="setExam('${s.id}','f2m2',this.value)"></td>
+<td>${f2}</td>
+<td><input size=4 value="${e.final||''}" onchange="setExam('${s.id}','final',this.value)"></td>
+<td>${annual}</td>
+<td><button class="btn ghost" onclick="editStudent('${s.id}')"><i class="fas fa-edit"></i></button></td>
+<td><button class="btn-danger" onclick="removeStudent('${s.id}')"><i class="fas fa-trash"></i></button></td>
+</tr>`;
+});
+html+='</tbody></table>';
+document.getElementById('gradesList').innerHTML=html;
+}
+
+window.setExam=(id,key,val)=>{
+const s=state.students.find(x=>x.id===id);
+if(!s) return;
+s.exams=s.exams||{};
+s.exams[key]=val.trim();
+save();
+renderGrades();
+}
+
+document.getElementById('gradesExport').onclick=function(){
+if(!state.students.length) {
+showNotification('خطأ', 'لا يوجد بيانات', 'error');
+return;
+}
+
+const hdr=['الاسم','الشعبة','شهري1 ف1','شهري2 ف1','معدل ف1','نصف السنة','شهري1 ف2','شهري2 ف2','معدل ف2','نهاية السنة','المعدل السنوي'];
+const rows=[hdr.join(',')];
+state.students.forEach(s=>{
+const e=s.exams||{};
+const n1=toNum(e.f1m1),n2=toNum(e.f1m2);
+const f1=(n1==null&&n2==null)?'':round2(((n1||0)+(n2||0))/((n1==null||n2==null)?1:2));
+const n3=toNum(e.f2m1),n4=toNum(e.f2m2);
+const f2=(n3==null&&n4==null)?'':round2(((n3||0)+(n4||0))/((n3==null||n4==null)?1:2));
+const mid=e.mid||'',fin=e.final||'';
+const parts=[];
+if(f1!=='') parts.push(parseFloat(f1));
+if(!isNaN(parseFloat(mid))) parts.push(parseFloat(mid));
+if(f2!=='') parts.push(parseFloat(f2));
+if(!isNaN(parseFloat(fin))) parts.push(parseFloat(fin));
+const ann=parts.length?round2(parts.reduce((a,b)=>a+b,0)/parts.length):'';
+const row=[s.name,s.class||'',e.f1m1||'',e.f1m2||'',f1,mid,e.f2m1||'',e.f2m2||'',f2,fin,ann];
+rows.push(row.map(c=>'"'+c.toString().replace(/"/g,'""')+'"').join(','));
+});
+downloadCSV(rows.join('\n'),'grades_export.csv');
+showNotification('نجاح', 'تم تصدير بيانات الدرجات', 'success');
+}
+
+document.getElementById('printGrades').onclick=function(){
+window.print();
+}
+
+function downloadCSV(content, filename){
+// إضافة BOM لتجنب مشاكل الترميز العربي في Excel
+const bom = "\uFEFF";
+const blob = new Blob([bom + content], {type: 'text/csv;charset=utf-8;'});
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = filename;
+document.body.appendChild(a);
+a.click();
+a.remove();
+URL.revokeObjectURL(url);
+}
+
+// نافذة الإضافة المتعددة
+document.getElementById('addMultipleBtn').onclick = function() {
+document.getElementById('addMultipleModal').style.display = 'flex';
+}
+
+document.getElementById('closeMultipleModal').onclick = function() {
+document.getElementById('addMultipleModal').style.display = 'none';
+}
+
+document.getElementById('cancelMultipleBtn').onclick = function() {
+document.getElementById('addMultipleModal').style.display = 'none';
+}
+
+document.getElementById('saveMultipleBtn').onclick = function() {
+const date = document.getElementById('multiDate').value;
+const cls = document.getElementById('multiClass').value;
+const status = document.querySelector('input[name="multiStatus"]:checked')?.value;
+const behavior = document.getElementById('multiBehavior').value;
+const action = document.getElementById('multiAction').value;
+
+if (!date) {
+showNotification('خطأ', 'يرجى اختيار التاريخ', 'error');
+return;
+}
+
+// التحقق إذا كان التاريخ يوم دراسي
+if (!isSchoolDay(date)) {
+const holidayName = getHolidayName(new Date(date));
+const dayOfWeek = new Date(date).getDay();
+let reason = 'يوم غير دراسي';
+
+if (dayOfWeek === 5) {
+reason = 'يوم الجمعة';
+} else if (dayOfWeek === 6) {
+reason = 'يوم السبت';
+} else if (holidayName) {
+reason = `عطلة (${holidayName})`;
+}
+
+showNotification('خطأ', `${reason} - لا يمكن تسجيل الحضور`, 'error');
+return;
+}
+
+if (!status) {
+showNotification('خطأ', 'يرجى اختيار حالة الحضور والغياب', 'error');
+return;
+}
+
+const students = cls ? state.students.filter(s => s.class === cls) : state.students;
+
+students.forEach(s => {
+s.attendance[date] = status;
+if (behavior) s.behaviorRecords[date] = behavior;
+if (action) s.actionRecords[date] = action;
+});
+
+save();
+renderFollow();
+updateStats();
+document.getElementById('addMultipleModal').style.display = 'none';
+showNotification('نجاح', `تم تحديث بيانات ${students.length} طالب`, 'success');
+}
+
+// نافذة الإدخال الجماعي للدرجات
+document.getElementById('bulkGradesBtn').onclick = function() {
+document.getElementById('bulkGradesModal').style.display = 'flex';
+}
+
+document.getElementById('closeBulkGradesModal').onclick = function() {
+document.getElementById('bulkGradesModal').style.display = 'none';
+}
+
+document.getElementById('cancelBulkGradesBtn').onclick = function() {
+document.getElementById('bulkGradesModal').style.display = 'none';
+}
+
+document.getElementById('bulkExamType').onchange = function() {
+updateBulkGradesList();
+}
+
+document.getElementById('bulkClass').onchange = function() {
+updateBulkGradesList();
+}
+
+function updateBulkGradesList() {
+const examType = document.getElementById('bulkExamType').value;
+const cls = document.getElementById('bulkClass').value;
+const container = document.getElementById('bulkGradesList');
+
+if (!examType) {
+container.innerHTML = '<p class="small muted">يرجى اختيار نوع الاختبار أولاً</p>';
+return;
+}
+
+const students = cls ? state.students.filter(s => s.class === cls) : state.students;
+
+if (students.length === 0) {
+container.innerHTML = '<p class="small muted">لا يوجد طلاب في الشعبة المحددة</p>';
+return;
+}
+
+let html = '';
+students.forEach(s => {
+const currentGrade = s.exams[examType] || '';
+html += `
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+<span>${esc(s.name)} - ${esc(s.class)}</span>
+<input type="number" min="0" max="100" step="0.5" value="${currentGrade}"
+data-student-id="${s.id}" data-exam-type="${examType}"
+style="width:80px;padding:.4rem;border-radius:4px;border:1px solid var(--border)">
+</div>
+`;
+});
+
+container.innerHTML = html;
+}
+
+document.getElementById('saveBulkGradesBtn').onclick = function() {
+const inputs = document.querySelectorAll('#bulkGradesList input');
+let updatedCount = 0;
+
+inputs.forEach(input => {
+const studentId = input.dataset.studentId;
+const examType = input.dataset.examType;
+const grade = input.value;
+
+const student = state.students.find(s => s.id === studentId);
+if (student) {
+student.exams = student.exams || {};
+student.exams[examType] = grade;
+updatedCount++;
+}
+});
+
+if (updatedCount > 0) {
+save();
+renderGrades();
+document.getElementById('bulkGradesModal').style.display = 'none';
+showNotification('نجاح', `تم تحديث درجات ${updatedCount} طالب`, 'success');
+}
+}
+
+// نافذة تأكيد مسح البيانات
+document.getElementById('clearDataBtn').onclick = function() {
+document.getElementById('confirmClearModal').style.display = 'flex';
+}
+
+document.getElementById('closeConfirmClearModal').onclick = function() {
+document.getElementById('confirmClearModal').style.display = 'none';
+}
+
+document.getElementById('cancelClearBtn').onclick = function() {
+document.getElementById('confirmClearModal').style.display = 'none';
+}
+
+document.getElementById('confirmClearBtn').onclick = function() {
+state.students = [];
+save();
+renderFollow();
+renderGrades();
+updateStats();
+document.getElementById('confirmClearModal').style.display = 'none';
+showNotification('نجاح', 'تم مسح جميع البيانات', 'success');
+}
+
+// استيراد الطلاب
+document.getElementById('importBtn').onclick = function() {
+const fileInput = document.getElementById('importFile');
+if (!fileInput.files.length) {
+showNotification('خطأ', 'يرجى اختيار ملف للاستيراد', 'error');
+return;
+}
+
+const file = fileInput.files[0];
+const reader = new FileReader();
+
+reader.onload = function(e) {
+try {
+let data;
+let fileName = file.name;
+
+// إخفاء المعاينة والملخص السابق
+document.getElementById('importPreview').style.display = 'none';
+document.getElementById('importSummary').style.display = 'none';
+
+if (fileName.endsWith('.json')) {
+// معالجة ملف JSON - تم تحسين طريقة القراءة لدعم الترميز العربي
+try {
+// استخدام TextDecoder لضمان قراءة الترميز بشكل صحيح
+const decoder = new TextDecoder('utf-8');
+const jsonData = decoder.decode(e.target.result);
+data = JSON.parse(jsonData);
+
+// التحقق من أن الملف يحتوي على البيانات المتوقعة
+if (data.students && Array.isArray(data.students)) {
+// استيراد البيانات مباشرة
+state.students = data.students;
+
+// الحفظ وتحديث الواجهة
+save();
+renderFollow();
+renderGrades();
+updateStats();
+
+showNotification('نجاح', `تم استيراد بيانات ${data.students.length} طالب بنجاح`, 'success');
+return;
+} else {
+showNotification('خطأ', 'ملف JSON لا يحتوي على بيانات الطلاب المتوقعة', 'error');
+return;
+}
+} catch (jsonError) {
+console.error('JSON Error:', jsonError);
+showNotification('خطأ', 'حدث خطأ في قراءة ملف JSON: ' + jsonError.message, 'error');
+return;
+}
+} else if (fileName.endsWith('.csv') || file.type === 'text/plain' || fileName.endsWith('.txt')) {
+// معالجة ملفات CSV والنصية
+const text = e.target.result;
+
+// تحديد الفاصل بناءً على امتداد الملف
+let separator = ',';
+if (fileName.endsWith('.txt')) {
+// للملفات النصية، نحاول اكتشاف الفاصل تلقائياً
+const commaCount = (text.match(/,/g) || []).length;
+const tabCount = (text.match(/\t/g) || []).length;
+const semicolonCount = (text.match(/;/g) || []).length;
+
+if (tabCount > commaCount && tabCount > semicolonCount) {
+separator = '\t';
+} else if (semicolonCount > commaCount && semicolonCount > tabCount) {
+separator = ';';
+}
+}
+
+// تحويل النص إلى مصفوفة من الأسطر
+const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+
+if (lines.length < 2) {
+showNotification('خطأ', 'الملف يحتوي على بيانات غير كافية. يجب أن يحتوي على عناوين وبيانات.', 'error');
+return;
+}
+
+// استخراج العناوين من السطر الأول
+const headers = lines[0].split(separator).map(h => h.trim().replace(/"/g, ''));
+
+// تحويل البيانات إلى كائنات
+data = [];
+for (let i = 1; i < lines.length; i++) {
+const values = lines[i].split(separator);
+const obj = {};
+
+for (let j = 0; j < headers.length && j < values.length; j++) {
+obj[headers[j]] = values[j].trim().replace(/"/g, '');
+}
+
+data.push(obj);
+}
+
+// عرض معاينة البيانات
+showImportPreview(data, headers);
+
+} else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+// Excel file
+try {
+const workbook = XLSX.read(e.target.result, { type: 'binary' });
+const firstSheetName = workbook.SheetNames[0];
+const worksheet = workbook.Sheets[firstSheetName];
+data = XLSX.utils.sheet_to_json(worksheet);
+
+// عرض معاينة البيانات
+if (data && data.length > 0) {
+showImportPreview(data, Object.keys(data[0] || {}));
+} else {
+showNotification('خطأ', 'لم يتم العثور على بيانات في ملف Excel', 'error');
+return;
+}
+} catch (excelError) {
+showNotification('خطأ', 'حدث خطأ في قراءة ملف Excel: ' + excelError.message, 'error');
+return;
+}
+} else {
+showNotification('خطأ', 'نوع الملف غير مدعوم. يرجى استخدام ملف CSV أو Excel أو نصي أو JSON', 'error');
+return;
+}
+
+// التحقق من وجود البيانات
+if (!data || data.length === 0) {
+showNotification('خطأ', 'لم يتم العثور على بيانات صالحة في الملف', 'error');
+return;
+}
+
+// التحقق من وجود الأعمدة المطلوبة
+const nameColumn = findColumn(data[0], ['اسم الطالب', 'name', 'Name', 'الاسم', 'طالب', 'student']);
+const classColumn = findColumn(data[0], ['الشعبة', 'class', 'Class', 'شعبة', 'فصل', 'section']);
+
+if (!nameColumn) {
+showNotification('خطأ', 'لم يتم العثور على عمود "اسم الطالب" في الملف', 'error');
+return;
+}
+
+if (!classColumn) {
+showNotification('خطأ', 'لم يتم العثور على عمود "الشعبة" في الملف', 'error');
+return;
+}
+
+// استيراد البيانات
+let importedCount = 0;
+let duplicateCount = 0;
+let invalidCount = 0;
+const summaryList = [];
+
+data.forEach((row, index) => {
+const name = row[nameColumn];
+const cls = row[classColumn];
+
+if (!name || !cls) {
+invalidCount++;
+summaryList.push(`<li class="error">السطر ${index + 1}: اسم الطالب أو الشعبة فارغ</li>`);
+return;
+}
+
+// التحقق إذا كان الطالب موجود بالفعل
+const exists = state.students.some(s => s.name === name && s.class === cls);
+
+if (exists) {
+duplicateCount++;
+summaryList.push(`<li class="warning">السطر ${index + 1}: الطالب "${name}" في شعبة "${cls}" موجود بالفعل</li>`);
+} else {
+state.students.push({
+id: 's' + Math.random().toString(36).slice(2, 8),
+name: name,
+class: cls,
+attendance: {},
+behaviorRecords: {},
+actionRecords: {},
+exams: { f1m1: '', f1m2: '', mid: '', f2m1: '', f2m2: '', final: '' }
+});
+importedCount++;
+summaryList.push(`<li class="success">السطر ${index + 1}: تم استيراد الطالب "${name}" بنجاح</li>`);
+}
+});
+
+// عرض ملخص الاستيراد
+showImportSummary(importedCount, duplicateCount, invalidCount, summaryList);
+
+// حفظ البيانات وتحديث الواجهة
+save();
+renderFollow();
+renderGrades();
+updateStats();
+fileInput.value = '';
+
+// إظهار رسالة النجاح
+if (importedCount > 0) {
+showNotification('نجاح', `تم استيراد ${importedCount} طالب جديد بنجاح`, 'success');
+} else if (duplicateCount > 0 && invalidCount === 0) {
+showNotification('تحذير', 'جميع الطلاب الموجودين في الملف مكررون بالفعل', 'warning');
+} else if (invalidCount > 0) {
+showNotification('خطأ', `تم العثور على ${invalidCount} سطر غير صالح في الملف`, 'error');
+} else {
+showNotification('خطأ', 'لم يتم استيراد أي طالب. يرجى التحقق من تنسيق الملف', 'error');
+}
+
+} catch (error) {
+console.error('Import error:', error);
+showNotification('خطأ', 'حدث خطأ أثناء استيراد الملف: ' + error.message, 'error');
+}
+};
+
+reader.onerror = function() {
+showNotification('خطأ', 'حدث خطأ أثناء قراءة الملف', 'error');
+};
+
+try {
+if (file.name.endsWith('.csv') || file.type === 'text/plain' || file.name.endsWith('.txt')) {
+reader.readAsText(file, 'UTF-8'); // تحديد ترميز UTF-8 صراحة
+} else if (file.name.endsWith('.json')) {
+reader.readAsArrayBuffer(file); // استخدام ArrayBuffer لملفات JSON لضمان قراءة الترميز بشكل صحيح
+} else {
+reader.readAsBinaryString(file);
+}
+} catch (readError) {
+showNotification('خطأ', 'حدث خطأ أثناء محاولة قراءة الملف: ' + readError.message, 'error');
+}
+}
+
+// البحث عن عمود في البيانات
+function findColumn(row, possibleNames) {
+if (!row) return null;
+
+for (const name of possibleNames) {
+if (row.hasOwnProperty(name)) {
+return name;
+}
+}
+
+return null;
+}
+
+// عرض معاينة البيانات المستوردة
+function showImportPreview(data, headers) {
+const previewDiv = document.getElementById('importPreview');
+const previewContent = document.getElementById('previewContent');
+
+// إنشاء جدول المعاينة (أول 5 صفوف فقط)
+let html = '<table><thead><tr>';
+headers.forEach(header => {
+html += `<th>${esc(header)}</th>`;
+});
+html += '</tr></thead><tbody>';
+
+// عرض أول 5 صفوف فقط
+const previewData = data.slice(0, 5);
+previewData.forEach(row => {
+html += '<tr>';
+headers.forEach(header => {
+html += `<td>${esc(row[header] || '')}</td>`;
+});
+html += '</tr>';
+});
+
+html += '</tbody></table>';
+
+if (data.length > 5) {
+html += `<p class="small muted">يتم عرض أول 5 صفوف من أصل ${data.length} صف</p>`;
+}
+
+previewContent.innerHTML = html;
+previewDiv.style.display = 'block';
+}
+
+// عرض ملخص عملية الاستيراد
+function showImportSummary(importedCount, duplicateCount, invalidCount, summaryList) {
+const summaryDiv = document.getElementById('importSummary');
+const summaryUl = document.getElementById('summaryList');
+
+let html = `
+<li class="success">تم استيراد ${importedCount} طالب جديد</li>
+<li class="warning">تم العثور على ${duplicateCount} طالب مكرر</li>
+<li class="error">تم تجاهل ${invalidCount} سطر غير صالح</li>
+`;
+
+// إضافة التفاصيل (أول 10 عناصر فقط)
+if (summaryList.length > 0) {
+html += '<li style="font-weight: bold; margin-top: 10px;">التفاصيل:</li>';
+const detailsToShow = summaryList.slice(0, 10);
+html += detailsToShow.join('');
+
+if (summaryList.length > 10) {
+html += `<li class="muted">... و ${summaryList.length - 10} أخرى</li>`;
+}
+}
+
+summaryUl.innerHTML = html;
+summaryDiv.style.display = 'block';
+}
+
+// تحويل CSV إلى JSON (للاستخدام الداخلي)
+function csvToJson(csv, separator = ',') {
+const lines = csv.split(/\r?\n/).filter(line => line.trim() !== '');
+const result = [];
+const headers = lines[0].split(separator).map(h => h.trim().replace(/"/g, ''));
+
+for (let i = 1; i < lines.length; i++) {
+if (!lines[i].trim()) continue;
+
+const obj = {};
+const currentline = lines[i].split(separator);
+
+for (let j = 0; j < headers.length; j++) {
+obj[headers[j]] = currentline[j] ? currentline[j].trim().replace(/"/g, '') : '';
+}
+
+result.push(obj);
+}
+
+return result;
+}
+
+// تصدير جميع البيانات
+document.getElementById('exportAllBtn').onclick = function() {
+if (!state.students.length) {
+showNotification('خطأ', 'لا يوجد بيانات للتصدير', 'error');
+return;
+}
+
+const rows = [];
+rows.push(['اسم الطالب', 'الشعبة', 'التاريخ', 'حالة الحضور والغياب', 'السلوك', 'الإجراء', 'شهري1 ف1', 'شهري2 ف1', 'نصف السنة', 'شهري1 ف2', 'شهري2 ف2', 'نهاية السنة']);
+
+state.students.forEach(s => {
+const e = s.exams || {};
+
+// جمع جميع التواريخ
+const allDates = new Set();
+Object.keys(s.attendance || {}).forEach(date => allDates.add(date));
+Object.keys(s.behaviorRecords || {}).forEach(date => allDates.add(date));
+Object.keys(s.actionRecords || {}).forEach(date => allDates.add(date));
+
+if (allDates.size === 0) {
+// لا يوجد سجلات حضور أو سلوك
+rows.push([s.name, s.class, '', '', '', '', e.f1m1 || '', e.f1m2 || '', e.mid || '', e.f2m1 || '', e.f2m2 || '', e.final || '']);
+} else {
+// إنشاء صف لكل تاريخ
+allDates.forEach(date => {
+// تحويل القيم القديمة إلى الجديدة عند التصدير
+let att = s.attendance[date] || '';
+if (att === 'محضر') att = 'حاضر';
+if (att === 'غير محضر') att = 'غائب';
+
+rows.push([
+s.name,
+s.class,
+date,
+att,
+s.behaviorRecords[date] || '',
+s.actionRecords[date] || '',
+e.f1m1 || '',
+e.f1m2 || '',
+e.mid || '',
+e.f2m1 || '',
+e.f2m2 || '',
+e.final || ''
+]);
+});
+}
+});
+
+downloadCSV(rows.map(r => r.map(c =>`"${c}"`).join(',')).join('\n'), 'all_students_data.csv');
+showNotification('نجاح', 'تم تصدير جميع البيانات', 'success');
+}
+
+// تصدير قائمة الطلاب فقط
+document.getElementById('exportStudentsBtn').onclick = function() {
+if (!state.students.length) {
+showNotification('خطأ', 'لا يوجد طلاب للتصدير', 'error');
+return;
+}
+
+const rows = [['اسم الطالب', 'الشعبة']];
+state.students.forEach(s => {
+rows.push([s.name, s.class]);
+});
+
+downloadCSV(rows.map(r => r.map(c =>`"${c}"`).join(',')).join('\n'), 'students_list.csv');
+showNotification('نجاح', 'تم تصدير قائمة الطلاب', 'success');
+}
+
+// تصدير ملف JSON
+document.getElementById('exportJsonBtn').onclick = function() {
+if (!state.students.length) {
+showNotification('خطأ', 'لا يوجد بيانات للتصدير', 'error');
+return;
+}
+
+// إنشاء نسخة من البيانات الحالية
+const dataCopy = JSON.parse(JSON.stringify(state));
+
+// إضافة معلومات إضافية
+dataCopy.exportDate = new Date().toISOString();
+dataCopy.appName = 'سجل متابعة ودرجات طلاب ثالث متوسط 2025-2026';
+dataCopy.appVersion = '1.0';
+
+// تحويل البيانات إلى نص JSON
+const jsonData = JSON.stringify(dataCopy, null, 2);
+
+// إنشاء ملف للتحميل
+const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8' });
+const url = URL.createObjectURL(blob);
+
+// إنشاء رابط للتحميل
+const a = document.createElement('a');
+a.href = url;
+
+// إنشاء اسم الملف مع التاريخ الحالي
+const now = new Date();
+const dateStr = now.toISOString().split('T')[0];
+a.download = `students_data_${dateStr}.json`;
+
+// إضافة الرابط للصفحة والنقر عليه
+document.body.appendChild(a);
+a.click();
+
+// تنظيف
+setTimeout(() => {
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+}, 0);
+
+showNotification('نجاح', 'تم تصدير البيانات كملف JSON', 'success');
+}
+
+// استعادة البيانات
+document.getElementById('restoreDataBtn').onclick = function() {
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = '.csv,.txt,.json';
+
+fileInput.onchange = function() {
+if (!fileInput.files.length) return;
+
+const file = fileInput.files[0];
+const reader = new FileReader();
+
+reader.onload = function(e) {
+try {
+if (file.name.endsWith('.json')) {
+// معالجة ملف JSON - تم تحسين طريقة القراءة لدعم الترميز العربي
+try {
+// استخدام TextDecoder لضمان قراءة الترميز بشكل صحيح
+const decoder = new TextDecoder('utf-8');
+const jsonData = decoder.decode(e.target.result);
+const data = JSON.parse(jsonData);
+
+// التحقق من أن الملف يحتوي على البيانات المتوقعة
+if (data.students && Array.isArray(data.students)) {
+// استيراد البيانات مباشرة
+state.students = data.students;
+
+// الحفظ وتحديث الواجهة
+save();
+renderFollow();
+renderGrades();
+updateStats();
+
+showNotification('نجاح', `تم استعادة بيانات ${data.students.length} طالب بنجاح`, 'success');
+return;
+} else {
+showNotification('خطأ', 'ملف JSON لا يحتوي على بيانات الطلاب المتوقعة', 'error');
+return;
+}
+} catch (jsonError) {
+console.error('JSON Error:', jsonError);
+showNotification('خطأ', 'حدث خطأ في قراءة ملف JSON: ' + jsonError.message, 'error');
+return;
+}
+}
+
+// تحديد الفاصل بناءً على امتداد الملف
+let separator = ',';
+if (file.name.endsWith('.txt')) {
+// للملفات النصية، نحاول اكتشاف الفاصل تلقائياً
+const text = e.target.result;
+const commaCount = (text.match(/,/g) || []).length;
+const tabCount = (text.match(/\t/g) || []).length;
+const semicolonCount = (text.match(/;/g) || []).length;
+
+if (tabCount > commaCount && tabCount > semicolonCount) {
+separator = '\t';
+} else if (semicolonCount > commaCount && semicolonCount > tabCount) {
+separator = ';';
+}
+}
+
+const data = csvToJson(e.target.result, separator);
+
+// مسح البيانات الحالية
+state.students = [];
+
+// استعادة البيانات
+data.forEach(row => {
+const name = row['اسم الطالب'] || row['name'] || row['Name'] || row['الاسم'];
+const cls = row['الشعبة'] || row['class'] || row['Class'] || row['شعبة'];
+const date = row['التاريخ'] || row['date'] || row['Date'] || '';
+let attendance = row['حالة الحضور والغياب'] || row['attendance'] || row['Attendance'] || row['الحضور'] || '';
+const behavior = row['السلوك'] || row['behavior'] || row['Behavior'] || '';
+const action = row['الإجراء'] || row['action'] || row['Action'] || '';
+const f1m1 = row['شهري1 ف1'] || row['f1m1'] || '';
+const f1m2 = row['شهري2 ف1'] || row['f1m2'] || '';
+const mid = row['نصف السنة'] || row['mid'] || '';
+const f2m1 = row['شهري1 ف2'] || row['f2m1'] || '';
+const f2m2 = row['شهري2 ف2'] || row['f2m2'] || '';
+const final = row['نهاية السنة'] || row['final'] || '';
+
+// تحويل القيم القديمة إلى الجديدة
+if (attendance === 'محضر') attendance = 'حاضر';
+if (attendance === 'غير محضر') attendance = 'غائب';
+
+if (name && cls) {
+// البحث عن الطالب إذا كان موجوداً
+let student = state.students.find(s => s.name === name && s.class === cls);
+
+if (!student) {
+student = {
+id: 's' + Math.random().toString(36).slice(2, 8),
+name: name,
+class: cls,
+attendance: {},
+behaviorRecords: {},
+actionRecords: {},
+exams: { f1m1: '', f1m2: '', mid: '', f2m1: '', f2m2: '', final: '' }
+};
+state.students.push(student);
+}
+
+// تحديث البيانات
+if (date) {
+if (attendance) student.attendance[date] = attendance;
+if (behavior) student.behaviorRecords[date] = behavior;
+if (action) student.actionRecords[date] = action;
+}
+
+if (f1m1) student.exams.f1m1 = f1m1;
+if (f1m2) student.exams.f1m2 = f1m2;
+if (mid) student.exams.mid = mid;
+if (f2m1) student.exams.f2m1 = f2m1;
+if (f2m2) student.exams.f2m2 = f2m2;
+if (final) student.exams.final = final;
+}
+});
+
+save();
+renderFollow();
+renderGrades();
+updateStats();
+showNotification('نجاح', 'تم استعادة البيانات بنجاح', 'success');
+} catch (error) {
+showNotification('خطأ', 'حدث خطأ أثناء استعادة البيانات: ' + error.message, 'error');
+console.error(error);
+}
+};
+
+if (file.name.endsWith('.json')) {
+reader.readAsArrayBuffer(file); // استخدام ArrayBuffer لملفات JSON لضمان قراءة الترميز بشكل صحيح
+} else {
+reader.readAsText(file, 'UTF-8'); // تحديد ترميز UTF-8 صراحة
+}
+};
+
+fileInput.click();
+}
+
+// إنشاء التقرير الشهري
+function generateReport() {
+const month = document.getElementById('reportMonth').value;
+const cls = document.getElementById('reportClass').value;
+
+if (!month) {
+showNotification('خطأ', 'يرجى اختيار الشهر', 'error');
+return;
+}
+
+// فلترة الطلاب حسب الشعبة
+const students = cls ? state.students.filter(s => s.class === cls) : state.students;
+
+if (students.length === 0) {
+showNotification('خطأ', 'لا يوجد طلاب في الشعبة المحددة', 'error');
+return;
+}
+
+// حساب الإحصائيات
+let totalDays = 0;
+let presentDays = 0;
+let absentDays = 0;
+let lateDays = 0;
+let noHomeworkDays = 0;
+let totalGrades = 0;
+let gradeCount = 0;
+let behaviorIncidents = 0;
+
+const studentStats = [];
+
+students.forEach(s => {
+const stats = {
+name: s.name,
+class: s.class,
+presentDays: 0,
+absentDays: 0,
+lateDays: 0,
+noHomeworkDays: 0,
+behaviorIssues: 0,
+avgGrade: 0,
+gradeCount: 0
+};
+
+// حساب أيام الحضور والغياب
+Object.keys(s.attendance || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+totalDays++;
+let att = s.attendance[date];
+// تحويل القيم القديمة إلى الجديدة
+if (att === 'محضر') att = 'حاضر';
+if (att === 'غير محضر') att = 'غائب';
+
+if (att === 'حاضر') {
+presentDays++;
+stats.presentDays++;
+} else if (att === 'غائب') {
+absentDays++;
+stats.absentDays++;
+} else if (att === 'لم يحل الواجب') {
+noHomeworkDays++;
+stats.noHomeworkDays++;
+} else if (att === 'متأخر') {
+lateDays++;
+stats.lateDays++;
+}
+}
+});
+
+// حساب مشاكل السلوك
+Object.keys(s.behaviorRecords || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+const behavior = s.behaviorRecords[date];
+if (['يضحك', 'يتكلم', 'يضرب صديقه', 'ينام'].includes(behavior)) {
+behaviorIncidents++;
+stats.behaviorIssues++;
+} else if (behavior === 'متاخر') {
+// تم حسابه بالفعل كتأخر في الحضور
+}
+}
+});
+
+// حساب متوسط الدرجات
+const e = s.exams || {};
+const grades = [
+toNum(e.f1m1),
+toNum(e.f1m2),
+toNum(e.mid),
+toNum(e.f2m1),
+toNum(e.f2m2),
+toNum(e.final)
+].filter(g => g !== null);
+
+if (grades.length > 0) {
+const sum = grades.reduce((a, b) => a + b, 0);
+const avg = sum / grades.length;
+totalGrades += avg;
+gradeCount++;
+stats.avgGrade = avg;
+stats.gradeCount = grades.length;
+}
+
+studentStats.push(stats);
+});
+
+// تحديث الإحصائيات العامة
+const attendanceRate = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+const avgGrade = gradeCount > 0 ? round2(totalGrades / gradeCount) : 0;
+
+// العثور على أفضل طالب
+const topStudent = studentStats
+.filter(s => s.gradeCount > 0)
+.sort((a, b) => b.avgGrade - a.avgGrade)[0];
+
+document.getElementById('attendanceRate').textContent = attendanceRate + '%';
+document.getElementById('avgGrade').textContent = avgGrade;
+document.getElementById('topPerformer').textContent = topStudent ? topStudent.name : '-';
+document.getElementById('behaviorIncidents').textContent = behaviorIncidents;
+
+// تحديث إحصائيات الحضور والغياب
+document.getElementById('totalPresentDays').textContent = presentDays;
+document.getElementById('totalAbsentDays').textContent = absentDays;
+document.getElementById('totalLateDays').textContent = lateDays;
+document.getElementById('totalNoHomeworkDays').textContent = noHomeworkDays;
+
+// إنشاء ملخص الشهر
+let summaryHtml = `
+<table>
+<thead>
+<tr>
+<th>الشعبة</th>
+<th>عدد الطلاب</th>
+<th>نسبة الحضور</th>
+<th>متوسط الدرجات</th>
+<th>مشاكل السلوك</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+// تجميع البيانات حسب الشعبة
+const classStats = {};
+students.forEach(s => {
+if (!classStats[s.class]) {
+classStats[s.class] = {
+count: 0,
+presentDays: 0,
+totalDays: 0,
+totalGrades: 0,
+gradeCount: 0,
+behaviorIssues: 0
+};
+}
+
+classStats[s.class].count++;
+
+Object.keys(s.attendance || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+classStats[s.class].totalDays++;
+let att = s.attendance[date];
+// تحويل القيم القديمة إلى الجديدة
+if (att === 'محضر') att = 'حاضر';
+if (att === 'غير محضر') att = 'غائب';
+
+if (att === 'حاضر') {
+classStats[s.class].presentDays++;
+}
+}
+});
+
+Object.keys(s.behaviorRecords || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+const behavior = s.behaviorRecords[date];
+if (['يضحك', 'يتكلم', 'يضرب صديقه', 'ينام'].includes(behavior)) {
+classStats[s.class].behaviorIssues++;
+}
+}
+});
+
+const e = s.exams || {};
+const grades = [
+toNum(e.f1m1),
+toNum(e.f1m2),
+toNum(e.mid),
+toNum(e.f2m1),
+toNum(e.f2m2),
+toNum(e.final)
+].filter(g => g !== null);
+
+if (grades.length > 0) {
+const sum = grades.reduce((a, b) => a + b, 0);
+const avg = sum / grades.length;
+classStats[s.class].totalGrades += avg;
+classStats[s.class].gradeCount++;
+}
+});
+
+Object.keys(classStats).forEach(cls => {
+const stats = classStats[cls];
+const classAttendanceRate = stats.totalDays > 0 ? Math.round((stats.presentDays / stats.totalDays) * 100) : 0;
+const classAvgGrade = stats.gradeCount > 0 ? round2(stats.totalGrades / stats.gradeCount) : 0;
+
+summaryHtml += `
+<tr>
+<td>${cls}</td>
+<td>${stats.count}</td>
+<td>${classAttendanceRate}%</td>
+<td>${classAvgGrade}</td>
+<td>${stats.behaviorIssues}</td>
+</tr>
+`;
+});
+
+summaryHtml += '</tbody></table>';
+document.getElementById('monthlySummary').innerHTML = summaryHtml;
+
+// إنشاء تفصيلي الطلاب
+let detailsHtml = `
+<table>
+<thead>
+<tr>
+<th>اسم الطالب</th>
+<th>الشعبة</th>
+<th>أيام الحضور</th>
+<th>أيام الغياب</th>
+<th>أيام التأخر</th>
+<th>عدم حل الواجب</th>
+<th>مشاكل السلوك</th>
+<th>متوسط الدرجات</th>
+<th>إنذارات الغياب</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+studentStats.forEach(s => {
+const student = state.students.find(st => st.name === s.name && st.class === s.class);
+const warning = student ? getWarningLevel(student) : null;
+let warningHtml = '';
+if (warning) {
+warningHtml = `<span class="warning-indicator ${warning.class}" title="${warning.text}">${warning.level.charAt(0).toUpperCase()}</span>`;
+}
+
+detailsHtml += `
+<tr>
+<td>${s.name}</td>
+<td>${s.class}</td>
+<td>${s.presentDays}</td>
+<td>${s.absentDays}</td>
+<td>${s.lateDays}</td>
+<td>${s.noHomeworkDays}</td>
+<td>${s.behaviorIssues}</td>
+<td>${s.gradeCount > 0 ? round2(s.avgGrade) : '-'}</td>
+<td>${warningHtml}</td>
+</tr>
+`;
+});
+
+detailsHtml += '</tbody></table>';
+document.getElementById('monthlyDetails').innerHTML = detailsHtml;
+}
+
+document.getElementById('generateReport').onclick = function() {
+generateReport();
+showNotification('نجاح', 'تم إنشاء التقرير الشهري', 'success');
+}
+
+document.getElementById('exportReport').onclick = function() {
+const month = document.getElementById('reportMonth').value;
+const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+const rows = [];
+rows.push(['اسم الطالب', 'الشعبة', 'أيام الحضور', 'أيام الغياب', 'أيام التأخر', 'عدم حل الواجب', 'مشاكل السلوك', 'متوسط الدرجات']);
+
+// جمع بيانات الطلاب
+const cls = document.getElementById('reportClass').value;
+const students = cls ? state.students.filter(s => s.class === cls) : state.students;
+
+students.forEach(s => {
+const stats = {
+name: s.name,
+class: s.class,
+presentDays: 0,
+absentDays: 0,
+lateDays: 0,
+noHomeworkDays: 0,
+behaviorIssues: 0,
+avgGrade: 0,
+gradeCount: 0
+};
+
+// حساب أيام الحضور والغياب
+Object.keys(s.attendance || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+let att = s.attendance[date];
+// تحويل القيم القديمة إلى الجديدة
+if (att === 'محضر') att = 'حاضر';
+if (att === 'غير محضر') att = 'غائب';
+
+if (att === 'حاضر') {
+stats.presentDays++;
+} else if (att === 'غائب') {
+stats.absentDays++;
+} else if (att === 'لم يحل الواجب') {
+stats.noHomeworkDays++;
+} else if (att === 'متأخر') {
+stats.lateDays++;
+}
+}
+});
+
+// حساب مشاكل السلوك
+Object.keys(s.behaviorRecords || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month) {
+const behavior = s.behaviorRecords[date];
+if (['يضحك', 'يتكلم', 'يضرب صديقه', 'ينام'].includes(behavior)) {
+stats.behaviorIssues++;
+}
+}
+});
+
+// حساب متوسط الدرجات
+const e = s.exams || {};
+const grades = [
+toNum(e.f1m1),
+toNum(e.f1m2),
+toNum(e.mid),
+toNum(e.f2m1),
+toNum(e.f2m2),
+toNum(e.final)
+].filter(g => g !== null);
+
+if (grades.length > 0) {
+const sum = grades.reduce((a, b) => a + b, 0);
+stats.avgGrade = sum / grades.length;
+stats.gradeCount = grades.length;
+}
+
+rows.push([
+stats.name,
+stats.class,
+stats.presentDays,
+stats.absentDays,
+stats.lateDays,
+stats.noHomeworkDays,
+stats.behaviorIssues,
+stats.gradeCount > 0 ? round2(stats.avgGrade) : '-'
+]);
+});
+
+downloadCSV(rows.map(r => r.map(c =>`"${c}"`).join(',')).join('\n'), `monthly_report_${monthNames[month-1]}.csv`);
+showNotification('نجاح', 'تم تصدير التقرير الشهري', 'success');
+}
+
+document.getElementById('printReport').onclick = function() {
+window.print();
+}
+
+// البحث عن طالب - الإكمال التلقائي
+const studentSearchInput = document.getElementById('studentSearchInput');
+const studentAutocompleteDropdown = document.getElementById('studentAutocompleteDropdown');
+let selectedStudentIndex = -1;
+
+// إضافة مستمعي الأحداث
+studentSearchInput.addEventListener('input', handleStudentSearchInput);
+studentSearchInput.addEventListener('keydown', handleStudentSearchKeydown);
+document.addEventListener('click', hideStudentAutocompleteDropdown);
+
+function handleStudentSearchInput() {
+const searchTerm = studentSearchInput.value.trim().toLowerCase();
+
+if (searchTerm.length === 0) {
+hideStudentAutocompleteDropdown();
+return;
+}
+
+// فلترة الطلاب بناءً على الحروف الأولى
+const filteredStudents = state.students.filter(student =>
+student.name.toLowerCase().startsWith(searchTerm)
+);
+
+showStudentAutocompleteDropdown(filteredStudents);
+}
+
+function handleStudentSearchKeydown(e) {
+const items = studentAutocompleteDropdown.querySelectorAll('.autocomplete-item');
+
+if (e.key === 'ArrowDown') {
+e.preventDefault();
+selectedStudentIndex = Math.min(selectedStudentIndex + 1, items.length - 1);
+updateSelectedStudent(items);
+} else if (e.key === 'ArrowUp') {
+e.preventDefault();
+selectedStudentIndex = Math.max(selectedStudentIndex - 1, -1);
+updateSelectedStudent(items);
+} else if (e.key === 'Enter') {
+e.preventDefault();
+if (selectedStudentIndex >= 0 && items[selectedStudentIndex]) {
+selectStudent(items[selectedStudentIndex].dataset.studentId);
+}
+} else if (e.key === 'Escape') {
+hideStudentAutocompleteDropdown();
+}
+}
+
+function updateSelectedStudent(items) {
+items.forEach((item, index) => {
+if (index === selectedStudentIndex) {
+item.classList.add('selected');
+} else {
+item.classList.remove('selected');
+}
+});
+}
+
+function showStudentAutocompleteDropdown(students) {
+selectedStudentIndex = -1;
+
+if (students.length === 0) {
+studentAutocompleteDropdown.innerHTML = '<div class="autocomplete-no-results">لا توجد نتائج</div>';
+} else {
+studentAutocompleteDropdown.innerHTML = students.map(student => `
+<div class="autocomplete-item" data-student-id="${student.id}">
+<span class="student-name">${esc(student.name)}</span>
+<span class="student-class">${esc(student.class)}</span>
+</div>
+`).join('');
+
+// إضافة مستمعي الأحداث للعناصر
+studentAutocompleteDropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+item.addEventListener('click', () => {
+selectStudent(item.dataset.studentId);
+});
+});
+}
+
+studentAutocompleteDropdown.classList.add('show');
+}
+
+function hideStudentAutocompleteDropdown() {
+studentAutocompleteDropdown.classList.remove('show');
+selectedStudentIndex = -1;
+}
+
+function selectStudent(studentId) {
+const student = state.students.find(s => s.id === studentId);
+if (student) {
+studentSearchInput.value = student.name;
+hideStudentAutocompleteDropdown();
+showStudentDetails(student);
+}
+}
+
+// البحث عن طالب
+document.getElementById('studentSearchBtn').onclick = function() {
+const searchInput = document.getElementById('studentSearchInput').value.trim();
+
+if (!searchInput) {
+showNotification('خطأ', 'يرجى إدخال اسم الطالب للبحث', 'error');
+return;
+}
+
+// البحث عن الطالب
+const student = state.students.find(s => s.name.includes(searchInput));
+
+if (!student) {
+showNotification('خطأ', 'لم يتم العثور على طالب بهذا الاسم', 'error');
+return;
+}
+
+showStudentDetails(student);
+}
+
+function showStudentDetails(student) {
+// حساب إحصائيات الطالب
+let presentDays = 0;
+let absentDays = 0;
+let lateDays = 0;
+let noHomeworkDays = 0;
+
+Object.keys(student.attendance || {}).forEach(date => {
+const att = student.attendance[date];
+if (att === 'حاضر') {
+presentDays++;
+} else if (att === 'غائب') {
+absentDays++;
+} else if (att === 'متأخر') {
+lateDays++;
+} else if (att === 'لم يحل الواجب') {
+noHomeworkDays++;
+}
+});
+
+// الحصول على مستوى الإنذار
+const warning = getWarningLevel(student);
+let warningText = 'لا يوجد إنذارات';
+if (warning) {
+warningText = warning.text;
+}
+
+// عرض النتائج
+document.getElementById('searchResultName').textContent = student.name;
+document.getElementById('searchResultClass').textContent = student.class;
+document.getElementById('searchResultPresent').textContent = presentDays;
+document.getElementById('searchResultAbsent').textContent = absentDays;
+document.getElementById('searchResultLate').textContent = lateDays;
+document.getElementById('searchResultWarnings').textContent = warningText;
+
+// عرض سجل الحضور والغياب
+const attendanceHistoryBody = document.getElementById('attendanceHistoryBody');
+let historyHtml = '';
+
+// جمع جميع التواريخ
+const allDates = new Set();
+Object.keys(student.attendance || {}).forEach(date => allDates.add(date));
+Object.keys(student.behaviorRecords || {}).forEach(date => allDates.add(date));
+Object.keys(student.actionRecords || {}).forEach(date => allDates.add(date));
+
+// ترتيب التواريخ من الأحدث إلى الأقدم
+const sortedDates = Array.from(allDates).sort((a, b) => new Date(b) - new Date(a));
+
+if (sortedDates.length === 0) {
+historyHtml = '<tr><td colspan="4" class="muted">لا توجد سجلات</td></tr>';
+} else {
+sortedDates.forEach(date => {
+let att = student.attendance[date] || '-';
+// تحويل القيم القديمة إلى الجديدة
+if (att === 'محضر') att = 'حاضر';
+if (att === 'غير محضر') att = 'غائب';
+
+const behavior = student.behaviorRecords[date] || '-';
+const action = student.actionRecords[date] || '-';
+
+historyHtml += `
+<tr>
+<td>${date}</td>
+<td>${att}</td>
+<td>${behavior}</td>
+<td>${action}</td>
+</tr>
+`;
+});
+}
+
+attendanceHistoryBody.innerHTML = historyHtml;
+
+// عرض سجل الدرجات
+const gradesHistoryBody = document.getElementById('gradesHistoryBody');
+let gradesHtml = '';
+
+const exams = student.exams || {};
+const examTypes = [
+{ key: 'f1m1', name: 'شهري1 ف1' },
+{ key: 'f1m2', name: 'شهري2 ف1' },
+{ key: 'mid', name: 'نصف السنة' },
+{ key: 'f2m1', name: 'شهري1 ف2' },
+{ key: 'f2m2', name: 'شهري2 ف2' },
+{ key: 'final', name: 'نهاية السنة' }
+];
+
+examTypes.forEach(exam => {
+if (exams[exam.key]) {
+gradesHtml += `
+<tr>
+<td>${exam.name}</td>
+<td>${exams[exam.key]}</td>
+</tr>
+`;
+}
+});
+
+if (gradesHtml === '') {
+gradesHtml = '<tr><td colspan="2" class="muted">لا توجد درجات</td></tr>';
+}
+
+gradesHistoryBody.innerHTML = gradesHtml;
+
+// إظهار نتائج البحث
+document.getElementById('studentSearchResult').classList.add('show');
+
+showNotification('نجاح', 'تم العثور على الطالب', 'success');
+}
+
+// البحث عن شهر سابق
+document.getElementById('monthSearchBtn').onclick = function() {
+const month = document.getElementById('searchMonthSelect').value;
+const year = document.getElementById('searchYearSelect').value;
+
+if (!month || !year) {
+showNotification('خطأ', 'يرجى اختيار الشهر والسنة', 'error');
+return;
+}
+
+// فلترة الطلاب
+const students = state.students;
+
+if (students.length === 0) {
+showNotification('خطأ', 'لا يوجد طلاب', 'error');
+return;
+}
+
+// حساب إحصائيات الشهر
+let totalPresent = 0;
+let totalAbsent = 0;
+let totalLate = 0;
+let totalStudents = 0;
+
+const studentStats = [];
+
+students.forEach(s => {
+const stats = {
+name: s.name,
+class: s.class,
+presentDays: 0,
+absentDays: 0,
+lateDays: 0,
+noHomeworkDays: 0
+};
+
+// حساب أيام الحضور والغياب للشهر المحدد
+Object.keys(s.attendance || {}).forEach(date => {
+const dateObj = new Date(date);
+if (dateObj.getMonth() + 1 == month && dateObj.getFullYear() == year) {
+if (s.attendance[date] === 'حاضر') {
+stats.presentDays++;
+totalPresent++;
+} else if (s.attendance[date] === 'غائب') {
+stats.absentDays++;
+totalAbsent++;
+} else if (s.attendance[date] === 'متأخر') {
+stats.lateDays++;
+totalLate++;
+} else if (s.attendance[date] === 'لم يحل الواجب') {
+stats.noHomeworkDays++;
+}
+}
+});
+
+// إضافة الطالب إلى القائمة إذا كان لديه سجلات في هذا الشهر
+if (stats.presentDays > 0 || stats.absentDays > 0 || stats.lateDays > 0 || stats.noHomeworkDays > 0) {
+studentStats.push(stats);
+totalStudents++;
+}
+});
+
+// ترتيب الطلاب حسب عدد أيام الغياب (الأكثر غيابًا أولاً)
+studentStats.sort((a, b) => b.absentDays - a.absentDays);
+
+// عرض النتائج
+const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+document.getElementById('searchResultMonth').textContent = `${monthNames[month-1]} ${year}`;
+document.getElementById('searchMonthPresent').textContent = totalPresent;
+document.getElementById('searchMonthAbsent').textContent = totalAbsent;
+document.getElementById('searchMonthLate').textContent = totalLate;
+document.getElementById('searchMonthStudents').textContent = totalStudents;
+
+// عرض قائمة الطلاب
+const monthStudentsBody = document.getElementById('monthStudentsBody');
+let studentsHtml = '';
+
+if (studentStats.length === 0) {
+studentsHtml = '<tr><td colspan="5" class="muted">لا توجد بيانات</td></tr>';
+} else {
+studentStats.forEach(s => {
+studentsHtml += `
+<tr>
+<td>${s.name}</td>
+<td>${s.class}</td>
+<td>${s.presentDays}</td>
+<td>${s.absentDays}</td>
+<td>${s.lateDays}</td>
+</tr>
+`;
+});
+}
+
+monthStudentsBody.innerHTML = studentsHtml;
+
+// إظهار نتائج البحث
+document.getElementById('monthSearchResult').classList.add('show');
+
+showNotification('نجاح', 'تم عرض بيانات الشهر المحدد', 'success');
+}
+
+// PWA Install Button
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  // Update UI notify the user they can install the PWA
+  installButton.style.display = 'flex';
+  
+  installButton.addEventListener('click', () => {
+    // Show the install prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+        showNotification('نجاح', 'تم تثبيت التطبيق بنجاح', 'success');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
+
+// Initial render
+// تحديث القيم القديمة أولاً
+updateOldAttendanceValues();
+renderFollow();
+renderGrades();
+updateStats();
+</script>
+</body>
+</html>
